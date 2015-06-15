@@ -1,0 +1,601 @@
+# Copyright ©2014 Dan Kortschak and The University of Adelaide. All rights reserved.
+
+alignment
+
+Dan Kortschak
+Bioinformatics Group
+dan.kortschak@adelaide.edu.au
+
+* The problems
+
+* Sequence data is fragmented
+
+# This needs to be on a normal slide.
+.html code/mathjax.html
+
+Fragmentation is observed at many levels:
+
+- sequencing data is created as short fragments of the true sequence
+- constructed data is often not completely assembled
+- database records are fragments
+- homologous sequences are (trivially) non-overlapping (both within a genome and between species)
+
+But we want to be able to compare similar sequences to find:
+
+- most-similar/identical (sub)sequences
+- determine minimal changes between pairs of sequences
+
+This requires we be able to align sequences.
+
+* Alignment
+
+Alignment of sequences allows us to:
+
+- find related genes/proteins in a database — can use to infer function
+- examine evolutionary relationships
+- assemble small sequence fragments into (near) whole genomes
+
+Different approaches used depending on task:
+
+- homology search — 'best' alignment for a given definition of best
+- sequence assembly/read mapping — perfect or near perfect match
+
+Exact (or near exact) matches are cheaper to calculate - so usually do them first (or only).
+
+
+* Types of alignment — pairwise
+
+Global alignment — _Needleman-Wunsch_
+
+- alignment of the full length of a pair
+
+Local alignment — _Smith-Waterman_
+
+- alignment of only matching subsequences of a pair
+- statistically understood (if no gaps)
+
+Both of these can be proven to give _an_ optimal alignment (_more_than_one_may_exist_).
+
+Tools available to perform these types of alignment:
+
+- FASTA, BLAST, needle, water, ... _many_more_
+
+* Types of alignment — multiple
+
+Again can perform alignments globally or locally.
+
+Tools do not guarantee optimum alignment.
+
+- optimal alignment can be determined, but cost scales with the product of input sequence lengths (this is bad for anything but small numbers of short sequences)
+
+Tools available to perform these types of alignment:
+
+- Clustal, PileUp, MUSCLE, MAFFT, ... _many_more_
+
+
+* How alignment works — NW
+
+Input sequences:
+
+.html alignment/code/align1.html
+
+* How alignment works — NW
+
+.html alignment/code/align2.html
+
+(Match: 1, Mismatch: 0, Gap: 0)
+
+* How alignment works — NW
+
+.html alignment/code/align3.html
+
+(Match: 1, Mismatch: 0, Gap: 0)
+
+* How alignment works — NW
+
+Can be thought of as a walk on a planar graph — easily represented as a matrix
+
+.image alignment/images/align-mat.png
+
+* How alignment works — NW
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0301.gif 500 _
+
+.caption Korf _et_al_. 2003
+
+* Finding the alignment — NW algorithm
+
+Very simples process, but many calculations — "Dynamic Programming"
+
+	Define matrix that has dimensions len(R)+1 rows by len(Q)+1 cols where R and Q are sequences.
+
+	Add gap penalties successively to first row and first column.
+	Place pointers in first row and first column pointing to top left.
+
+	For each empty cell, at row i and column j:
+		calculate S(i,j) = max(
+			S(i-1, j-1) + alignment score for R(i) — Q(j) // diagonal
+			S(i-1, j  ) + gap penalty                     // up
+			S(i  , j-1) + gap penalty                     // left
+		)
+
+		place a pointer towards the cell (or cells if wanted) that gave the maximum
+
+	Trace arrows back from lower-right to upper-left to get alignment path.
+
+Work through `PELICAN` vs `COELOCANTH`  with match=1, mismatch=-1, gap=-1
+
+* Finding the alignment — NW initialisation
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0302.gif 500 _
+
+.caption Korf _et_al_. 2003
+
+* Finding the alignment — NW filling
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0303.gif 154 _
+
+	S(i,j) = max(
+		S(i-1, j-1) + score for aligning x(i) with y(j)
+		S(i-1, j  ) + penalty for gap
+		S(i  , j-1) + penalty for gap
+	)
+
+	S(i-1, j-1) = 0, S(i-1, j) = -1, S(i, j-1) = -1
+
+	gap   = -1
+	align = -1 (mismatch)
+
+	Max = -1 (diagonal 0-1 mismatch, alternatives are -1-1 — left and up gaps)
+
+* Finding the alignment — NW filling
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0304.gif 154 _
+
+	S(i,j) = max(
+		S(i-1, j-1) + score for aligning x(i) with y(j)
+		S(i-1, j  ) + penalty for gap
+		S(i  , j-1) + penalty for gap
+	)
+
+	S(i-1, j-1) = -1, S(i-1, j) = -2, S(i, j-1) = -1
+
+	gap   = -1
+	align = -1 (mismatch)
+
+	Max = -2 (diagonal -1-1 — mismatch and -1-1 — left gap, alternatives is -2-1 — up gap)
+
+* Finding the alignment — NW filling
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0305.gif 500 _
+
+.caption Korf _et_al_. 2003
+
+* Finding the alignment — NW backtrack
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0306.gif 500 _
+
+.caption Korf _et_al_. 2003
+
+* Finding the alignment — NW
+
+.play alignment/code/nw.go /func main/,/^}/
+
+* Finding the alignment — SW
+
+Smith-Waterman is a modification of the Needleman-Wunsch algorithm:
+
+- no score is negative
+- no backtracking along zero score pointers
+- start at maximum scoring position (there may be more than one)
+
+	Define matrix that has dimensions len(R)+1 rows by len(Q)+1 cols where R and Q are sequences.
+
+	Fill the first row and column with zeros.
+
+	For each empty cell, at row i and column j:
+		calculate S(i,j) = max(
+			0
+			S(i-1, j-1) + alignment score for R(i) — Q(j) // diagonal
+			S(i-1, j  ) + gap penalty                     // up
+			S(i  , j-1) + gap penalty                     // left
+		)
+
+		place a pointer towards the non-zero cell (or cells if wanted) that gave the maximum
+
+	Trace arrows back from maximum cell as far as possible to get alignment path.
+
+* Finding the alignment — SW
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0307.gif 500 _
+
+.caption Korf _et_al_. 2003
+
+* Finding the alignment — SW
+
+.play alignment/code/sw.go /func main/,/^}/
+
+* Interlude — algorithmic complexity in brief
+
+In computation we need to understand:
+
+- how long things are likely to take
+- how much space they are likely to need
+
+We describe this as the algorithm's complexity.
+
+It is a description of how computation time and space scale with input size.
+
+We are interested in the worst-case limit; this is written using big-\(\begin{equation}O\end{equation}\) notation, _e.g._ (simplifying – the \(\begin{equation}O()\end{equation}\) hides significant details and so is not the complete picture):
+
+- good: \(\begin{equation}O(1)\end{equation}\), \(\begin{equation}O(log~n)\end{equation}\), \(\begin{equation}O(n)\end{equation}\), \(\begin{equation}O(n~log~n)\end{equation}\)
+- reasonable: \(\begin{equation}O(n^2)\end{equation}\)
+- not so good: \(\begin{equation}O(n^3)\end{equation}\), \(\begin{equation}O(n^4)\end{equation}\) ... (worse as exponent increases)
+- bad: \(\begin{equation}O(2^n)\end{equation}\), \(\begin{equation}O(n!)\end{equation}\)
+
+* Interlude — algorithmic complexity in brief
+
+.image alignment/images/big-o.png
+
+* Implementation details
+
+Why do we use Dynamic Programming?
+
+We could define results recursively — the algorithm is defined this way.
+
+Assuming we have two sequences n and m long (n≥m):
+
+- recursive implementation gives a loose \(\begin{equation}O(3^n)\end{equation}\) time, and \(\begin{equation}O(n)\end{equation}\) space
+- Dynamic Programming gives us \(\begin{equation}O(nm)\end{equation}\) time and space
+
+So we trade a more expensive memory cost for being able to complete the alignment in our lifetime.
+
+# "The 1950s were not good years for mathematical research. We had a very interesting
+# gentleman in Washington named Wilson. He was Secretary of Defense, and he actually
+# had a pathological fear and hatred of the word, research. I'm not using the term lightly;
+# I'm using it precisely. His face would suffuse, he would turn red, and he would get
+# violent if people used the term, research, in his presence. You can imagine how he felt,
+# then, about the term, mathematical. The RAND Corporation was employed by the Air Force,
+# and the Air Force had Wilson as its boss, essentially. Hence, I felt I had to do something
+# to shield Wilson and the Air Force from the fact that I was really doing mathematics inside
+# the RAND Corporation. What title, what name, could I choose? In the first place I was
+# interested in planning, in decision making,. . . But planning, is not a good word for
+# various reasons. I decided therefore to use the word, "programming". . . [Dynamic] has a
+# very interesting property as an adjective, and that is its impossible to use the word,
+# dynamic, in a pejorative sense. Try thinking of some combination that will possibly give
+# it a pejorative meaning. Its impossible. Thus, I thought dynamic programming was a good
+# name. It was something not even a Congressman could object to. So I used it as an umbrella
+# for my activites."
+# — Richard Bellman, "Eye of the Hurricane: an autobiography" 1984.
+
+
+* Other modifications — minimise gap introduction
+
+.html alignment/code/affine.html
+
+* A more biological gap penalty function
+
+In the current scoring system all gaps are considered equal: a gap by itself is just as costly as a gap surrounded by others.
+
+This doesn't reflect biology well.
+
+- opening a gap is difficult
+- extending a gap may be easier
+
+Broadly, changes in gap length are more significant when gaps are shorter.
+
+We want a more a general gap penalty function that gives us the option of not penalizing additional gaps as much as the first.
+
+This is expensive for the completely general case: \(\begin{equation}O(m^2n + n^2m)\end{equation}\) time.
+
+* Affine gap penalty
+
+We can get something _good_enough_ by using an affine (shifted) gap penalty function:
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0308.gif 250 _
+
+.caption Korf _et_al_. 2003
+
+This still adds cost since we need to consider whether the gap is a new gap or is extending an existing gap, but the increase is linear, so we still have \(\begin{equation}O(nm)\end{equation}\) time and space. _(You_might_like_to_think_about_how_affine_gap_cost_is_implemented)._
+
+This approach is commonly used.
+
+
+* Substitution matrices
+
+* Not all matches and mismatches are created equal
+
+We are aligning sequences to allow us to compare equivalent sequence region. How do we deal with cases where there is more than one potentially different best alignment:
+
+.html alignment/code/scoring.html
+
+* Chemical similarities between amino acids
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0401.gif 500 _
+
+.caption Korf _et_al_. 2003
+
+* Prefer alignments between similar letters
+
+So probably we should choose the second alignment:
+
+.html alignment/code/scoring-good.html
+
+How do we quantify letter similarity to allow our algorithm to incorporate this information?
+
+There are a number of ways we could do this, which should we choose?
+
+(_"All_models_are_wrong,_but_some_are_useful."_)
+
+* Substitution matrix approach - evolution to the rescue
+
+Define a look-up table to assign match scores based on some observed acceptability.
+
+PAM (Percent Accepted Mutation)
+
+- _accepted_point_mutation_ is a replacement of one amino acid in a protein with another residue that has been accepted by natural selection
+- PAM\(\begin{equation}_1\end{equation}\) defined by how frequently an amino acid changes in a collection of closely related sequences globally aligned
+- PAM\(\begin{equation}_n\end{equation}\) are derived from PAM\(\begin{equation}_1\end{equation}\) by matrix exponentiation (PAM\(\begin{equation}_n\end{equation}\) = PAM\(\begin{equation}_1^n\end{equation}\))
+
+BLOSUM (BLOcks SUbstitution Matrix)
+
+- similar to PAM matrices, but more empirically defined
+- each matrix is defined by a set of local alignments of conserved families
+- BLOSUM\(\begin{equation}_n\end{equation}\) is defined by alignment of sequences clustered with identity ≥ \(\begin{equation}n\end{equation}\)% (_i.e._ clusters are no more than \(\begin{equation}n\end{equation}\)% identical)
+
+* Example matrix
+
+.html alignment/code/pam.html
+
+* BLOSUM vs PAM
+
+PAM based on:
+
+- explicit model of evolution (replacements are counted on the branches of a phylogenetic tree)
+- mutations observed throughout a global alignment including conserved and mutable regions
+
+
+BLOSUM based on:
+
+- implicit model of evolution
+- clusters of highly conserved regions in a collection of gap-free alignments
+
+Increasing \(\begin{equation}n\end{equation}\) in PAM\(\begin{equation}_n\;\end{equation}\)increases evolutionary distance, while increasing \(\begin{equation}n\end{equation}\) in BLOSUM\(\begin{equation}_n\;\end{equation}\)decreases evolutionary distance.
+
+BLOSUM is now more commonly used.
+
+* Constructing BLOSUM\(\begin{equation}_n\end{equation}\)
+
+Sequences are clustered into 'averaged' sequences so that no 'sequence' is more than \(\begin{equation}n\end{equation}\)% identical with any other.
+
+For a scoring matrix \(\begin{equation}S\end{equation}\), \(\begin{equation}S_{ij}\end{equation}\) is the scaled log-odds for a pair of amino acids:
+
+\begin{equation}\lambda{S_{ij}} = log\frac{q_{ij}}{p_ip_j}\end{equation}
+
+where \(\begin{equation}q_{ij} = q_{ji}\end{equation}\) and is the cluster-weighted frequency of pairing letters \(\begin{equation}i\end{equation}\) and \(\begin{equation}j\end{equation}\),
+\(\begin{equation}p_{i}\end{equation}\) and \(\begin{equation}p_{j}\end{equation}\) are the cluster-weighted proportions of letters \(\begin{equation}i\end{equation}\) and \(\begin{equation}j\end{equation}\) in the clusters (_i.e._ the expected pairing frequency),
+
+and \(\begin{equation}\lambda\end{equation}\) is a constant that scales the matrix such that all unique \(\begin{equation}q_{ij}\end{equation}\) sum to 1:
+
+\begin{equation}\sum_{i=1}^{n} \sum_{j=1}^{i} q_{ij} = \sum_{i=1}^{n} \sum_{j=1}^{i} p_ip_je^{\lambda S_{ij}} = 1\end{equation}
+
+* Using a scoring matrix
+
+Remember with Needleman-Wunsch we filled the alignment matrix with the following:
+
+	calculate S(i,j) = max(
+		S(i-1, j-1) + alignment score for R(i) — Q(j) // diagonal
+		S(i-1, j  ) + gap penalty                     // up
+		S(i  , j-1) + gap penalty                     // left
+	)
+
+Now we get `alignment`score`for`R(i)`—`Q(j)` from the scoring matrix by looking up the value for the pairing of `R(i)` and `Q(j)` instead of using a simple match or mismatch score.
+
+This applies to Smith-Waterman as well.
+
+* Comparing simple scoring to matrix
+
+.play alignment/code/nw-matrix.go /func main/,/^}/
+
+
+* Speeding up large alignments
+
+* Large sequences and collections
+
+Consider looking for local matches to a large sequence or collection of sequences. Most of the sequence you are querying is not useful, but you still need to do the work.
+
+What does \(\begin{equation}O(nm)\end{equation}\) mean when \(\begin{equation}n\end{equation}\) is the length of a genome (~3x10⁹ bases for a mammal), ... or worse an entire database (~54x10⁹ bases for 'nr' nucleotide)?
+
+.image alignment/images/blast-problem.png
+
+.caption Altschul 2011 [[https://www.cs.umd.edu/class/fall2011/cmsc858s/BLAST.pdf][Lecture notes]]
+
+This kind of search is impractical with Smith-Waterman.
+
+_Q_: How do we deal with this?
+
+_A_: Only look where you are likely to find something.
+
+* Toy example
+
+Say we have a pair of sequences that we suspect have significant alignable regions:
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0501.gif 300 _
+
+.caption Korf _et_al_. 2003
+
+How does BLAST analyse the sequence to find these?
+
+* Common words
+
+Intuition: a local alignment with score high enough to be of interest will likely contain an aligned pair of short (length _W_) _words_ with score greater than or equal to some _threshold_ value, _T_ - this pair of words is a _hit_
+
+So...
+
+- for each _word_ in the query sequence determine what possible words (_T_ neighbours) it could pair with to form a _hit_
+- search the database for exact matches to query _words_ neighbours (_remember_exact_matches_are_cheap_to_find_) to find actual _hits_
+- examine each _hit_ to see if it is a chance event, or is contained in a significant alignment
+
+* Words
+
+_e.g._ sequence = `LLNKCKT` and _W_ = 3:
+
+.html alignment/code/words.html
+
+* Neighbourhoods
+
+Given a particular query word, _e.g._ `PQG` we can enumerate the score for matching against all other words of the same length...
+
+.html alignment/code/neighbours.html
+
+and select only words that have a score above _T_ to search for.
+
+Note that nucleotide BLAST does not use neighbourhoods and so exact query _word_ matches must exist in the database.
+
+* Effect of changing T
+
+Number of _hits_ scales approximately exponentially with decreasing _T_.
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0503.gif 450 _
+
+.caption Korf _et_al_. 2003
+
+* Cooperative seeding
+
+We can choose to only work with _hits_ that are on the same diagonal.
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0504.gif 300 _
+
+.caption Korf _et_al_. 2003
+
+* Bad neighbourhoods
+
+Nucleotide word searches don't allow neighbours, so we can miss real matches.
+
+How many _W_ = 5 _hits_ are there in this pair of highly similar sequences?
+
+.html alignment/code/bad-neighbours.html
+
+How might you get around this problem?
+
+* Seed extension
+
+Extend out from each seed until extension reduces the score below a threshold from the highest score so far achieved. Then trim back to the highest score reached.
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0505.gif 167 _
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0506.gif 180 _
+
+.caption Korf _et_al_. 2003
+
+* BLAST search algorithm
+
+.image alignment/images/blast-alg.png
+
+.caption Altschul 2011 [[https://www.cs.umd.edu/class/fall2011/cmsc858s/BLAST.pdf][Lecture notes]]
+
+* Running time
+
+How does BLAST compare with Smith-Waterman in practice?
+
+Holding _T_ constant BLAST has approximately \(\begin{equation}O(n + m + nm/l^W)\end{equation}\) time, but space is \(\begin{equation}O(l^W)\end{equation}\).
+
+* Evaluation
+
+An important aspect of BLAST is that it provides an indication of the statistical significance of a reported alignment.
+
+Each HSP has a score, \(\begin{equation}S\end{equation}\), found during the alignment process.
+
+The number, \(\begin{equation}E\end{equation}\), of expected hits with a score greater than \(\begin{equation}S\end{equation}\) can be calculated using the Karlin-Altschul equation:
+
+\begin{equation}E = k \centerdot m \centerdot n \centerdot e^{-\lambda S}\end{equation}
+
+where \(\begin{equation}m\end{equation}\) is the (effective) query length, \(\begin{equation}n\end{equation}\) is the (effective) database length, and \(\begin{equation}\lambda\end{equation}\) is defined by the scoring matrix. \(\begin{equation}k\end{equation}\) is an adjustment constant to account for correlation between alignments.
+
+So by setting a threshold \(\begin{equation}E\end{equation}\), and discarding all HSPs with an \(\begin{equation}S\end{equation}\) below the calculated threshold, BLAST can report only alignments that are deemed significant.
+
+* Evaluation
+
+.image http://etutorials.org/shared/images/tutorials/tutorial_98/blst_0507.gif 450 _
+
+.caption Korf _et_al_. 2003
+
+* Karlin-Altschul equation
+
+The Karlin-Altschul equation,
+
+\begin{equation}E = k \centerdot m \centerdot n \centerdot e^{-\lambda S}\end{equation}
+
+is based on five assumptions:
+
+- a positive score must be possible ✔
+- the expected score must be negative ✔
+- the letters of the sequences are independent and identically distributed (IID) ✘
+- the sequences are infinitely long ✘
+- alignments don't contain gaps ✘
+
+But gaps and length can be corrected for, and it works in practice.
+
+* Karlin-Altschul corrections — length
+
+\(\begin{equation}n'\end{equation}\) and \(\begin{equation}m'\end{equation}\) corrected length:
+
+\begin{equation}x' = max \Bigg\{\begin{array}{l l}x - \frac{log~knm}{H}\\1/k\end{array}\end{equation}
+
+where \(\begin{equation}H\end{equation}\) is the relative entropy (measure of information content) of the scoring matrix. For protein scoring matrices:
+
+\begin{equation}H = -\sum_{i=1}^{20} \sum_{j=1}^{i} q_{ij}\lambda S_{ij}\end{equation}
+
+Note that \(\begin{equation}H\end{equation}\) can be used to compare different scoring matrices, (_e.g._ BLOSUM45, \(\begin{equation}H =\end{equation}\) 0.263 nats, is reasonably equivalent to PAM250, \(\begin{equation}H =\end{equation}\) 0.245 nats).
+
+* Karlin-Altschul corrections — gaps
+
+There is no equivalent analytical approach, so the parameters must be determined experimentally by aligning random sequences with a specific scoring scheme and observing the alignment properties (scores, target frequencies, and lengths).
+
+The ungapped scoring matrix whose behavior is most similar to the gapped scoring scheme provides values for \(\begin{equation}\lambda\end{equation}\), \(\begin{equation}k\end{equation}\), and \(\begin{equation}H\end{equation}\).
+
+Effect of gaps on BLOSUM62:
+
+.html alignment/code/gaps.html
+
+* And now for something completely different
+
+* Searching for many short sequence matches in a genome
+
+Searching for exact or near exact matches is important in seeding alignments for a number of tools.
+
+Exact search has \(\begin{equation}O(nm)\end{equation}\) time, where \(\begin{equation}n\end{equation}\) is genome length and \(\begin{equation}m\end{equation}\) is total query length.
+
+In the cases that we will be looking at \(\begin{equation}m\end{equation}\) is composed of hundreds of millions of short (~100bp) sequences, making it a very large value.
+
+How do we efficiently find all the locations of these short sequences?
+
+* Burrows-Wheeler Transform
+
+The Burrows-Wheeler Transform was originally developed to aid in data compression, by reversibly rearranging a sequence of letters so that the same letters tend to be near each other.
+
+.image http://bioinformatics.oxfordjournals.org/content/25/14/1754/F2.medium.gif
+
+.caption Li and Durbin 2009 [[http://dx.doi.org/10.1093/bioinformatics/btp324][doi:10.1093/bioinformatics/btp324]]
+
+* Burrows-Wheeler search
+
+In addition, the BWT offers some interesting opportunities for searching for sequences.
+
+For example we can find all the locations of the string "go" starting fom index \(\begin{equation}i\end{equation}\) = 1 in S:
+
+.image http://bioinformatics.oxfordjournals.org/content/25/14/1754/F2.medium.gif
+
+.caption Li and Durbin 2009 [[http://dx.doi.org/10.1093/bioinformatics/btp324][doi:10.1093/bioinformatics/btp324]]
+
+* Burrows-Wheeler search
+
+The Burrows-Wheeler search can be broken into two steps:
+
+- BWT indexing — \(\begin{equation}O(n)\end{equation}\) time and is done only once for any reference
+- search — \(\begin{equation}O(m)\end{equation}\) time with care
+
+So we improve from \(\begin{equation}O(nm)\end{equation}\) to \(\begin{equation}O(n + m)\approx O(m)\end{equation}\) if index is reused many times.
+
+A variety of short read alignment tools use this algorithm, including `bwa` and `bowtie`.
+
+Short read aligners are central for genome resequencing and transcriptomic analysis.

@@ -1,0 +1,766 @@
+# Copyright ©2014 Dan Kortschak and The University of Adelaide. All rights reserved.
+
+# http://stats.stackexchange.com/questions/726/famous-statistician-quotes
+
+genomics and transcriptomics
+
+Dan Kortschak
+Bioinformatics Group
+dan.kortschak@adelaide.edu.au
+
+
+* Genomics
+
+# This needs to be on a normal slide.
+.html code/mathjax.html
+
+Genomics is essentially the analysis of the biology of an organism through the lens of its genome.
+
+It differs from seemingly similar sciences such as genetics in that the analysis need not (but may) involve functional assessments, but must involve direct analysis of genomic* sequence data.
+
+Another way of describing it is as *genome*biology*, _i.e._ the biology of the genome.
+
+Formally (OED): the branch of molecular biology concerned with the structure, function, evolution, and mapping of genomes.
+
+
+* Transcriptomics
+
+Transcriptomics is thus the analysis of the biology of an organism through the lens of its transcriptome.
+
+Formally (OED): the field of transcriptomics allows for the examination of whole transcriptome changes across a variety of biological conditions.
+
+Because of their shared technological basis, genomics and transcriptomics are considered together in this lecture.
+
+
+* Disruptive technologies
+
+Genomics and transcriptomics as sciences have been made possible by the coincidence of two major disruptive technologies.
+
+- massively parallel DNA sequencing technology
+- cheap and powerful computation — largely due to consumer electronics development (because games)
+
+Without both of these in concert, genomics and transcriptomics are essentially impossible.
+
+As we have seen previously, although historically these have been reasonably in step with each other, sequencing technology now leads computation, giving rise to new challenges.
+
+A _caveat_:
+"A big computer, a complex algorithm and a long time does not equal science."
+— Robert Gentleman
+
+
+* Sequencing
+
+Since having a genome/transcriptome sequence (or part of one) is necessary for genomic/transcriptomic analysis, the acquisition of genome sequence data is a significant part of these sciences.
+
+Sequencing technology has *changed*significantly* over the past *few*decades*.
+
+_I_sequenced_manually_using_Sanger_sequencing_when_I_was_a_post_graduate_student_and_my_supervisor_had_never_used_Sanger,_instead_using_the_even_older_Maxam-Gilbert_chemical_sequencing_technology._This_was_only_20_years_ago._
+
+Expect the technology to change, but understand the basis for each approach, where it is appropriate and where it is not — this means you need to understand the question you are asking.
+
+
+* Sequencing — technologies — Sanger
+
+.image http://onlinelibrary.wiley.com/store/10.1002/bies.200900181/asset/image_n/nfig001.jpg 450 _
+
+.caption Kircher and Kelso 2010 [[http://dx.doi.org/10.1002/bies.200900181][doi:10.1002/bies.200900181]]
+
+* Sequencing — technologies — 454 Pyrosequencing
+
+.image http://onlinelibrary.wiley.com/store/10.1002/bies.200900181/asset/image_n/nfig002.jpg 450 _
+
+.caption Kircher and Kelso 2010 [[http://dx.doi.org/10.1002/bies.200900181][doi:10.1002/bies.200900181]]
+
+* Sequencing — technologies — Illumina GA
+
+.image http://onlinelibrary.wiley.com/store/10.1002/bies.200900181/asset/image_n/nfig003. 450 _
+
+.caption Kircher and Kelso 2010 [[http://dx.doi.org/10.1002/bies.200900181][doi:10.1002/bies.200900181]]
+
+* Sequencing — technologies — SOLiD
+
+.image http://onlinelibrary.wiley.com/store/10.1002/bies.200900181/asset/image_n/nfig004.jpg 450 _
+
+.caption Kircher and Kelso 2010 [[http://dx.doi.org/10.1002/bies.200900181][doi:10.1002/bies.200900181]]
+
+* Sequencing — technologies — comparison
+
+# Originally edited to remove Helicos.
+.image http://onlinelibrary.wiley.com/store/10.1002/bies.200900181/asset/image_n/ntbl001.jpg _ 900
+
+.caption Kircher and Kelso 2010 [[http://dx.doi.org/10.1002/bies.200900181][doi:10.1002/bies.200900181]]
+
+
+* Sequencing — new technologies — PacBio
+
+Single long molecule sequencing — moderate to very high error rate.
+
+.image http://www.sciencemag.org/content/323/5910/133/F1.large.jpg _ 900
+
+.caption Eid _et_al_. 2009 [[http://dx.doi.org/10.1126/science.1162986][doi:10.1126/science.1162986]] see [[http://www.youtube.com/watch?v=WMZmG00uhwU]]
+
+
+* Sequencing — new technologies — Oxford Nanopore
+
+Single long molecule sequencing — high error rate.
+
+.image http://www.technologyreview.com/sites/default/files/legacy/nanopore_x616%5B1%5D.jpg 400 _
+
+.caption [[http://www2.technologyreview.com/article/427677/nanopore-sequencing/]] see [[http://www.youtube.com/watch?v=3UHw22hBpAk]]
+
+
+* Sequencing — technologies — general
+
+All the modern sequencing technologies gain their benefits from miniturisation allowing massive parallisation — the same technological approach that has made modern computers effective.
+
+# In the original lectures this was a composite of parts of figures 1, 3 and 4.
+.image http://www.nature.com/nrg/journal/v11/n1/images/nrg2626-f1.jpg 400 _
+
+.caption after Metzker 2010 [[http://dx.doi.org/10.1038/nrg2626][doi:10.1038/nrg2626]]
+
+* Sequencing — general considerations
+
+Depth/coverage — how much sequence is needed to adequately cover the regions you want to analyse?
+
+- this depends on sequencing errors and effect size of the biology
+
+Read length/pairing — can you benefit from longer reads?
+
+- this can help with repetitive regions, mapping confidence _etc_.
+
+Error profiles ­— what types of error can you tolerate?
+
+- different technologies have different biases, mix them to reduce bias if you can
+
+Strandedness — does strandedness matter?
+
+- for example non-coding RNA as will be seen later
+
+
+* Sequencing - coverage
+
+Before you start! What is the problem you are trying to address?
+
+This impacts on how much sequencing you need to do.
+
+# The frequency of studies that use read counts of all runs (which are
+# typically flow-cell lanes) and that were deposited from 2012 to June
+# 2013 for the Illumina platform in the European Nucleotide Archive (ENA)
+# is shown. The plot provides an overview of sequencing depths that are
+# usually chosen for the four most common experimental strategies.
+# The depth and therefore the cost of an experiment increase in the order
+# of chromatin immunoprecipitation followed by sequencing (ChIP–seq), RNA
+# sequencing (RNA-seq), whole-exome sequencing (WES) to whole-genome
+# sequencing (WGS).
+.image http://www.nature.com/nrg/journal/v15/n2/images/nrg3642-f1.jpg 380 _
+
+.caption Sims _et_al_. 2014 [[http://dx.doi.org/10.1038/nrg3642][doi:10.1038/nrg3642]]
+
+
+* Sequencing — coverage/length
+
+.image http://www.nature.com/nrg/journal/v15/n2/images/nrg3642-i1.jpg 500 _
+
+.caption Sims _et_al_. 2014 [[http://dx.doi.org/10.1038/nrg3642][doi:10.1038/nrg3642]]
+
+
+* Sequencing — coverage
+
+# Staged sequencing for predicting sequencing requirements - use kinetic analysis
+# to determine where the cost-benefit tipping point is reached.
+.image http://www.nature.com/nrg/journal/v15/n2/images/nrg3642-i2.jpg 500 _
+
+.caption Sims _et_al_. 2014 [[http://dx.doi.org/10.1038/nrg3642][doi:10.1038/nrg3642]]
+
+
+* Sequencing — coverage/replication for transcriptomics
+# In the original lectures, this was a composite of figures 1b and 2d showing the
+# effect of change in replication as a change in FDR while keeping read count constant
+# and the curve following the knees in the cost versus DE gene discover plots.
+
+More replicates is better than more depth*.
+
+# Note in part a that keeping constant total read count and increasing replication
+# gives an upward diagonal - increasing power.
+.image http://bioinformatics.oxfordjournals.org/content/30/3/301/F1.large.jpg 450 _
+
+.caption Liu _et_al_. 2014 [[http://doi.org/10.1093/bioinformatics/btt688][doi:10.1093/bioinformatics/btt688]]
+
+* Sequencing — coverage/replication for transcriptomics
+
+# We maximise return by following the knees of the curves in part d.
+.image http://bioinformatics.oxfordjournals.org/content/30/3/301/F2.large.jpg 400 _
+
+\begin{equation}Cost / 1\% \ power = \frac{cost / sample \times samples + sequencing \ costs}{power}\end{equation}
+
+.caption Liu _et_al_. 2014 [[http://doi.org/10.1093/bioinformatics/btt688][doi:10.1093/bioinformatics/btt688]]
+
+* Sequencing — errors
+
+# Illustration of platform-specific errors. Artemis BAM views with reads
+# (horizontal bars) mapping to defined regions of chromosome 11 of
+# P. falciparum from PacBio (P; top), Ion Torrent (I; middle) and MiSeq (M; bottom).
+# A - long homopolymer, B - short homopolymer, C - strand-specific deletions
+.image http://www.biomedcentral.com/content/figures/1471-2164-13-341-4.jpg 500 _
+
+.caption Quail _et_al_. 2012 [[http://dx.doi.org/10.1186/1471-2164-13-341][doi:10.1186/1471-2164-13-341]]
+
+
+* Sequencing — errors
+
+There are many sources of errors in sequencing experiments. Some are controllable.
+
+Sample preparation
+
+- mislabeling; degradation of sample from preservation methods; alien sequence contamination; low DNA input
+
+Library preparation
+
+- cross contamination; PCR errors; 3′-end capture bias during polyA enrichment; private mutations; machine failure; chimeric reads; barcode or adaptor errors
+
+Sequencing and imaging
+
+- cluster crosstalk caused by overloading; incomplete extension/addition; _dead_ fluorophores; failure of laser, hard drive, software or fluidics; strand biases
+
+.caption Robasky _et_al_. 2014 [[http://dx.doi.org/10.1038/nrg3655][doi:10.1038/nrg3655]]
+
+* Sequencing — paired-ends
+
+Paired end sequencing increases the span of reference covered by a single template.
+
+Improves alignment quality and allows non-contiguous regions to be joined.
+
+.image http://www.illumina.com/content/dam/illumina-marketing/images/technology/paired-end-sequencing-figure.gif
+
+.caption [[http://www.illumina.com/technology/next-generation-sequencing/paired-end-sequencing_assay.ilmn][www.illumina.com]] 2014
+
+
+* Sequencing a genome/transcriptome — it's simple really
+
+Pure sample — DNA from one organism or clonal population.
+
+Fragment — physically split into chunks that can be sequenced.
+
+Prepare libraries — attach fragments to adaptors, size select and amplify*.
+
+Sequence the fragments.
+
+Reassemble — put the chunks back together virtually and analyse*.
+
+
+* Sequencing a genome/transcriptome — it's simple really
+
+.image http://www.biotechniques.com/multimedia/archive/00231/BTN_A_000114133_O_F_231434a.jpg
+
+.caption Head _et_al_. 2014 [[http://dx.doi.org/10.2144/000114133][doi:10.2144/000114133]]
+
+
+
+* Sequencing a Genome/transcriptome — it's simple really
+
+# Prompt to point out that there are a lot of ways to go and the problem
+# should direct the approach.
+.image http://3.bp.blogspot.com/-MvNoQsrILRA/UiWKZsfv_UI/AAAAAAAAA24/2L58httnVkE/s640/Library+Prep+TubeMap.jpg 500 _
+
+.caption [[http://core-genomics.blogspot.com.au/2013_09_01_archive.html]]
+
+
+* Sequencing vs. resequencing
+
+Resequencing — sequencing a new variant of an genome already sequenced
+
+- use a reference genome for assembly/alignment
+- short reads are acceptable (longer reads and pairs may help depending on question)
+
+Sequencing (_de_novo_) — the genome has no close relative available
+
+- assembled without a reference
+- need longer reads and paired ends
+
+
+* How big is a run? How much does it cost? How long to get the data?
+
+Sanger — 96 sequences of 1kb in 3 hours for $100.
+
+454 — 10⁵ 650-base reads in 1 day for $2,000.
+
+SOLiD — 10⁸ 75-base reads in 8 days for $2,000.
+
+Illumina — 3x10¹⁰ 100-base reads in 5 days for $3,000.
+
+
+* How much is enough?
+
+.image http://thamesidemedia.com/wp-content/uploads/2012/10/string.jpeg 270 _
+
+.caption thamesidemedia.com
+
+Consider error profile and experimental requirements:
+
+- 7x coverage is minimal with long reads
+- 30x with short reads
+
+Maybe more if looking for very low frequency effects, less if effects are strong.
+
+
+* Genome sequencing strategies
+
+Whole genome shotgun:
+
+- fragment genome randomly
+- sequence the fragments
+- assemble fragmented sequence data
+
+Clone-by-clone:
+
+- split the genome into large minimally-overlapping segments
+- fragment each segment randomly
+- assemble fragmented sequence data
+- join the segments
+
+Hybrid — global structure using clone-by-clone then shotgun adds coverage.
+
+Clone-by-clone and hybrid becoming less important as new technology improves.
+
+
+* Transcriptome/Exome sequencing
+
+With the advent of high throughput sequencing, exome (the exonic parts of the genome) and transcriptome sequencing are now performed using a shotgun approach.
+
+For the case of transcriptome sequencing this allows expression levels to be reflected in read depth, giving a method for assessing gene expression.
+
+Transcriptome sequencing:
+
+- reverse transcribe target RNA
+- fragment cDNA
+- sequence fragments
+- optionally assemble fragments and then map to reference genome
+
+
+* Exome sequencing
+
+Exome sequencing is a short-cut approach to genome sequencing that is based on the assumption that the majority of interesting parts of the genome are in exonic regions. Whether this holds true for any given experiment needs to be assessed.
+
+If it is true, it enables coverage to be focused on a more relevant part of the genome, saving cost and improving statistical support.
+
+Exome sequencing:
+
+- fragment genome randomly
+- enrich fragment pool for exonic DNA by hybridisation* or amplification
+- sequence fragments
+- map to reference genome
+
+*This approach can be generalised to capture array based sequencing where specific parts of the genome or transcriptome defined by the experimenter.
+
+
+* Assembly — the bad news
+
+"On two occasions I have been asked [by members of Parliament], ‘Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?’ I am not able rightly to apprehend the kind of confusion of ideas that could provoke such a question."
+— Charles Babbage
+
+Correct assembly is difficult… …really difficult.
+
+Reads are often bad due to experimental error and the underlying truth is difficult and fundamentally intractable to definitive analysis.
+
+If we accept 'good enough' it is achievable, but be aware that *all* published *genomes* are *incorrect*.
+
+
+* Assembly — acceptance of reality
+
+Given that we can get a reasonable answer, how do we do that?
+
+In the early years of genome sequencing, long reads were used — simply perform sequence alignments and connect aligned sequences into contigs, supercontigs, ultracontigs and chromsomes.
+
+Short reads make that less reliable — reduced information content in the read may prevent unambiguous alignment between pairs of reads.
+
+Enter graph theory…
+
+
+* Graphs
+
+Graphs are structures that allow representation of connection between entities.
+
+Connections represented by edges and entities are nodes.
+
+Graph representation allows significant detail to be kept while ignoring incidental information that is not relevant to the problem.
+
+*Euler's*Seven*Bridges*of*Königsberg*problem*
+
+.image genomics/images/koenigsberg.svg 220 _
+
+
+* Graphs
+
+The solution to the Seven Bridges problem is that it is not possible — there is no path that crosses every bridge exactly once (Eulerian path).
+
+There _is_ a path that can visit every node once though (Hamiltonian path).
+# The reason for the existence of a solution Hamiltonian path equivalent
+# of the Seven Bridges problem is because it is a less constrained path.
+
+These two types of paths can describe the 'correct' assembly of a collection of reads where:
+
+- Hamiltonian — nodes are reads and edges are existence of overlap between reads
+- Eulerian — edges are reads and nodes are the actual overlap between reads
+
+
+* Graphs in assembly
+
+Take the sequence `TAATGCCATGGGATGTT`.
+
+Hamiltonian representation
+
+.image genomics/images/hamiltonian.svg _ 900
+
+Eulerian representation
+
+# I'm being sneaky here by condensing the GG node, but doing so greatly
+# simplifies the size of the graph.
+.image genomics/images/eulerian.svg _ 900
+
+
+* Graphs in assembly
+
+The Eulerian representation can be simplified to only represent the nodes non-redundantly — this is the deBruijn graph of the sequence.
+
+.image genomics/images/deBruijn.svg _ 900
+
+
+* Graphs in assembly
+
+Finding the *Eulerian*path* of the *deBruijn*graph* finds shortest sequence containing all the reads with a time complexity \(\begin{equation}O(n)\end{equation}\).
+
+The equivalent Hamiltonian search is \(\begin{equation}O(c^n)\end{equation}\) — the Eulerian approach is a massive improvement.
+
+So… are we done? Not quite. There are still issues with the approach (actually the problems are intrinsic to assembling biological sequences).
+
+* Graphs in assembly — problems
+
+Repeated sequences cause problems when they are equal to or longer than the read length.
+
+.image http://www.nature.com/nrg/journal/v14/n5/images/nrg3433-f1.jpg 350 _
+
+.caption Berger _et_al_. 2012 [[http://dx.doi.org/10.1038/nrg3433][doi:10.1038/nrg3433]]
+
+Using paired-end reads can effectively increase the length of the reads.
+
+* Graphs in assembly — problems
+
+There are still problems though. The input data may not accurately reflect the true graph:
+
+- we don't have complete coverage
+- reads contain errors
+- we don't have exact numbers for each substring's level of representation
+- paired ends' distances are approximate
+
+These were all implicitly assumed away in the previous discussion.
+
+Approaches exist to deal with these problems — beyond the scope of the this course.
+
+
+* Transcriptomic expression analysis
+
+An RNA sequence data set can be used to assess expression levels in the target molecules: mRNA, small non-coding RNA, _etc_.
+
+Based on the assumption that levels of sequence representation are an accurate representation of gene expression levels.
+
+Ensuring proper normalisation of levels is important: a number of techniques exist — the simplest is "reads per kilobase per million reads" (RPKM) normalisation. A similar metric, FPKM, is used for paired-end data where fragments rather than reads are counted.
+
+\begin{equation}RPKM = \frac{C}{N \centerdot L} \centerdot 10^6\end{equation}
+
+Where \(\begin{equation}C\end{equation}\) is the number of reads mapped, \(\begin{equation}N\end{equation}\) is the total number of reads in the experiment and \(\begin{equation}L\end{equation}\) is the length of the transcript in kb.
+
+Very blunt — there *are*better*approaches* that are _actually_statistically_supportable_.
+
+
+* Transcriptomic expression analysis — mRNA
+
+Align reads to a reference genome and compare depth of coverage of known exons*.
+
+- paired ends help here with resolving intron junctions and mapping accuracy
+- strandedness may be important depending on experiment (usually not)
+
+# The original lectures included only the first and second profiles.
+.image http://journals.plos.org/plosone/article/figure/image?size=medium&id=info:doi/10.1371/journal.pone.0016266.g003 300 _
+
+.caption Twine _et_al_. 2011 [[http://dx.doi.org/10.1371/journal.pone.0016266][doi:10.1371/journal.pone.0016266]]
+
+*Can also be used for exon discovery.
+
+
+* Transcriptomic expression analysis — ncRNA
+
+Non-coding RNA can also be examined — here strandedness is important since the strand orientation of the molecule is strictly biologically significant and may not be determinable from the sequence directly.
+
+# Zhipeng Qu — A thaliana lncRNA analysis
+.image genomics/images/lncRNA.png _ 900
+
+
+* Transcriptomic analysis — splice variation
+
+Splice variation is a significant component of gene regulation in eukaryotic genomes.
+
+Transcriptomic data can be used to identify splice variation and quantify the levels of expression of slice variants.
+
+* Transcriptomic analysis — splice variation
+
+Consideration of paired-end data and read interruption can reveal splice variants.
+
+.image http://www.nature.com/nrg/journal/v12/n10/images/nrg3068-f2.jpg 440 _
+
+.caption Martin and Wang 2011 [[http://dx.doi.org/10.1038/nrg3068][doi:10.1038/nrg3068]]
+
+
+* Transcriptomic analysis — splice variation
+
+Splice variants can also be determined from _de_novo_ assembly of transcriptome data.
+
+# The original lectures included only parts b-e.
+.image http://www.nature.com/nrg/journal/v12/n10/images/nrg3068-f3.jpg 440 _
+
+.caption Martin and Wang 2011 [[http://dx.doi.org/10.1038/nrg3068][doi:10.1038/nrg3068]]
+
+
+* Functional genomic analysis
+
+Sequencing approaches may also be used to examine interactions between genomic elements and other factors (ChIP-seq), or the between elements themselves (4C-seq).
+
+.image http://www.bnl.gov/bnlweb/pubaf/pr/photos/2011/11/chip_seq_illustration_final-hr.jpg 400 _
+
+.caption [[http://www.bnl.gov/newsroom/news.php?a=11351][www.bnl.gov]] 2011
+
+
+* Annotation
+
+A genome without context is _essentially_meaningless_. In sequencing a genome we have removed the (_biological_) context by re-rendering the information as textual data.
+
+Annotation is the re-application of (_human-meaningful_) context.
+
+That is, *annotation* is an *interpretation* of the *meaning*of*the*sequence*.
+
+More concretely it is the identification, marking and grouping of related features in a sequence.
+
+Features may be:
+
+- structurally defined — sequence motifs, region of conservation/similarity
+- functionally defined — gene regulatory elements, protein binding site, _etc_.
+- simple — promoter element, restriction site, _etc_.
+- complex — gene (regulatory elements, transcriptional start/stop, intron splice donor/acceptor start/stop codons, conserved domains, _etc_.), intron, transposon, _etc_.
+
+
+* Regulatory motifs
+
+A sequence motif is a *conserved*sequence*pattern*, usually with a *biological*function*.
+
+For example, genes contain motifs that regulate such things as:
+
+- transcription initiation
+- variant splice regulation
+- translation initiation
+- RNA stability
+- _etc_.
+
+Identifying motifs aids in both recognising complex features — clusters of motifs may indicate the presence of a complex feature — and understanding the biology of the feature.
+
+
+* Representing motifs
+
+Since sequence motifs are just patterns of letters within a sequence defined by conservation they can be represented as a *consensus*sequence*of*the*alignment*.
+
+# The original lectures included only parts a and b.
+.image http://www.nature.com/nrg/journal/v5/n4/images/nrg1315-i1.jpg 300 _
+
+.caption Wasserman and Sandelin 2004 [[http://dx.doi.org/10.1038/nrg1315][doi:10.1038/nrg1315]]
+
+Motifs depend on the notion that sequence conservation is indicative of conserved function, so the consensus should represent the underlying conserved structure.
+
+* Representing motifs
+
+However, a consensus does not indicate the relative importance of different positions and letters, so we often use a frequency or weight matrix.
+
+# The original lectures included only parts a, c and d, and included a correction in part d.
+.image http://www.nature.com/nrg/journal/v5/n4/images/nrg1315-i1.jpg 400 _
+
+.caption Wasserman and Sandelin 2004 [[http://dx.doi.org/10.1038/nrg1315][doi:10.1038/nrg1315]]
+
+* Representing motifs
+
+"If I can't picture it, I can't understand it." — Albert Einstein
+
+Sequence logos are a graphical representation of degree of conservation at a given site in a motif giving an indication of how well conserved individual positions are.
+
+# The original lectures included only parts a and f.
+.image http://www.nature.com/nrg/journal/v5/n4/images/nrg1315-i1.jpg 350 _
+
+.caption after Wasserman and Sandelin 2004 [[http://dx.doi.org/10.1038/nrg1315][doi:10.1038/nrg1315]]
+
+
+* Sequence logos
+
+Start with an alignment of as many instances of the motif as possible.
+
+\(\begin{equation}R_i\end{equation}\) is the amount information present at position \(\begin{equation}i\end{equation}\) in the motif alignment:
+\begin{equation}R_i = 2 - (H_i +e_n)\end{equation}
+\begin{equation}H_i = -\sum_{s \in S} f_{s,i} log_2 f_{s,i}\end{equation}
+Where \(\begin{equation}f_{s,i}\end{equation}\) is the proportion of letter \(\begin{equation}s\end{equation}\) at position \(\begin{equation}i\end{equation}\), \(\begin{equation}S\end{equation}\) is the set of letters and \(\begin{equation}e_n\end{equation}\) is a correction factor required when one only has a few sample sequences.
+
+.caption Schneider and Stephens 1990 [[http://dx.doi.org/10.1093/nar/18.20.6097][doi:10.1093/nar/18.20.6097]]
+
+This should look familiar.
+
+
+* Motif function
+
+A particular motif may be recognised in DNA its RNA transcript or the protein product, but it is likely to function in only one of these contexts.
+
+DNA motifs: transcription regulation, structural sequences (e.g. centromere/telomere), DNA replication origin, _Etc_.
+
+.image http://www.genomebiology.com/content/figures/gb-2006-7-12-r122-1.jpg 320 _
+
+.caption Mariño-Ramírez _et_al_. 2006 [[http://dx.doi.org/10.1186/gb-2006-7-12-r122][doi:10.1186/gb-2006-7-12-r122]]
+
+
+* Motif function
+
+RNA motifs:
+
+- transcription termination signals
+- mRNA splice sites
+
+.image http://weblogo.berkeley.edu/img/intron-exon.png
+
+.caption [[http://weblogo.berkeley.edu/examples.html]]
+
+- mRNA stability
+- ribosome binding, start and stop codons
+- miRNA, rRNA, tRNA function
+
+
+* Motif function
+
+Protein:
+
+- domains — _e.g._ Ig domains have a signature sequence
+- structure — structural motifs (common shapes as opposed to common sequences) often have associated sequence motifs
+- function — classes of binding proteins, ensymatics functions _etc_. have specific motifs
+- localization — target peptide sequences form motifs
+
+
+* Finding simple motifs — discovery
+
+Motifs can be found by phylogenetic comparison — phylogenetic footprinting.
+
+# "the S. cerevisiae GAL1 gene and 5′-flanking region are shown. Strong
+# cross-species conservation can be seen in the regulatory region upstream
+# of the promoter, as well as in the protein-coding portion of the gene.
+# The conserved element shown at bottom overlaps three GAL4-binding sites
+# (highlighted in base-level view). A fourth GAL4-binding site also is
+# reflected by a small bump in the conservation scores (left arrow), as is
+# the promoter itself (right arrow)."
+.image http://genome.cshlp.org/content/15/8/1034/F4.large.jpg 450 _
+
+.caption Siepel _et_al_. 2005 [[http://dx.doi.org/10.1101/gr.3715005][doi:10.1101/gr.3715005]]
+
+
+* Finding simple motifs — discovery
+
+Motifs can be found by functional comparison — _e.g._ ChIP-seq.
+
+# Not strictly alignment as previously discussed — e.g. Gibbs Sampler with a PWM and scoring.
+# There are many other approaches, but we are not going into details here.
+Motifs are found by performing sequence alignments* on sequences known to have a common function.
+
+.image http://lh6.ggpht.com/_NNjxeW9ewEc/TJxJjDTZOgI/AAAAAAAAEPA/giAqKU_UGD0/tmp1A561_thumb1_thumb1.jpg 350 _
+
+.caption [[http://what-when-how.com/bioinformatics/gibbs-sampling-and-bioinformatics]]
+
+
+* Finding simple motifs — known
+
+A number of motif databases exist for DNA, RNA and protein motifs.
+
+- TANSFAC — transcription factor binding site motifs
+- JASPAR — transcription factor binding site motifs
+- RegRNA — RNA regulatory motifs
+- Pfam — protein domain families
+- Prosite — small protein motifs
+- _many_more_
+
+
+* Finding complex motifs — genes
+
+Homology search can find genes — BLAST/BLAT _etc_. or phylogenetic footprinting.
+
+Genes can also be found _ab_initio_ based on the presence and arrangement of characteristic patters of motifs — Fgenesh, GenScan, _etc_.
+
+- work well with protein coding genes — not so much with non-coding genes
+
+# Introduce gene models notion with this image.
+.image genomics/images/gene.svg _ 800
+
+.caption see Brent 2007 [[http://dx.doi.org/10.1038/nbt0807-883][doi:10.1038/nbt0807-883]]
+
+Also… not strictly motif search, but we can also use sequencing data — RNA-seq or EST mapping.
+
+
+* Gene models
+
+A representation of a transcript that contains information about features of the transcript such as exon/intron boundaries, splice sites, UTRs, _etc_. Alternative splicing means there may be more than one gene model for any given gene.
+
+.image genomics/images/hgt_genome_36f8_f8d9f0.png
+
+These can be determined empirically using RNA-seq/EST data or computationally using gene prediction tools.
+
+
+* Gene models
+
+Models are represented internally by (potentially nested) interval records, _e.g._ `GFF`
+
+.html genomics/code/gff.html
+
+
+* Predicting gene models — validation
+
+We can compare models from computational and empirical sources to validate the computational approach.
+
+.image genomics/images/hgt_genome_c66_f9a510.png
+
+# Keeping in mind all the relevant sensitivity/specificity trade-off relationships.
+
+Computational model generation is always dependent on biological grounding — we cannot extend too far from what we have already seen in real data:
+
+- we did not predict small non-coding RNA genes before we had seen them
+- prediction tools do not do well outside their target organism
+
+Improving gene prediction is an iterative process.
+
+# These tools allow us to build up a gene set for the genome being characterised.
+# This data set is then usable by biologists/bioinformaticians to build on further.
+
+
+* Variant annotation
+
+So far we have been discussing assembling a data set that describes the *One*True*Genome*. Obviously this does not exist since for the vast majority of species individuals differ genetically.
+
+We can use additional sequencing data to build up a map of variations within the population by mapping to the reference we have built.
+
+There are tools for viewing this kind of data, but again the internal representation is as a collection of intervals based on the coordinate system of the reference genome, _e.g._ `VCF`
+
+.html genomics/code/vcf.html
+
+* Resources
+
+Book chapter "An Introduction to High-Throughput Sequencing Experiments: Design and Bioinformatics Analysis" (pp26):
+
+.link http://link.springer.com/protocol/10.1007%2F978-1-62703-514-9_1
+
+Randomisation:
+
+.link http://www.genetics.org/content/185/2/405.full
+
+Design considerations:
+
+.link https://genohub.com/next-generation-sequencing-guide/
+.link http://genengnews.com/gen-articles/6-things-to-consider-before-your-next-gen-sequencing-project/4386/
+.link http://core-genomics.blogspot.com/2012/10/how-to-do-better-ngs-experiments.html
+
+

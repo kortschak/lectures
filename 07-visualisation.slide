@@ -1,0 +1,271 @@
+# Copyright ©2014 Dan Kortschak and The University of Adelaide. All rights reserved.
+
+visualisation
+
+Dan Kortschak
+Bioinformatics Group
+dan.kortschak@adelaide.edu.au
+
+* Visualisation
+
+# This needs to be on a normal slide.
+.html code/mathjax.html
+
+Visualisation is an important aspect of bioinformatics research.
+
+Needed to communicate findings in a meaningful way.
+
+Also an important tool in exploring data sets to generate hypotheses.
+
+
+* Visualisation — communication to others
+
+This part of visualisation is perhaps less interesting here, and follows from exploratory visualisation. Very important none the less
+
+Much published work on good use of graphics to aid communication, _e._g._
+
+- _classic_, "The Visual Display of Quantitative Information", Tufte 2009.
+
+.image visualisation/napoleons-march-01-red.jpg 200 _
+
+.caption Morse and Finley 2002
+
+- _recent_, "Ten Simple Rules for Better Figures", Rougier _et_al._ [[http://www.ploscompbiol.org/article/info:doi/10.1371/journal.pcbi.1003833][10.1371/journal.pcbi.1003833]]
+
+
+* Visualisation
+
+What is the role of graphics in data visualisation?
+
+	Graphical displays should
+
+	- show the data
+	- induce the viewer to think about the substance rather than about methodology,
+	  graphic design, the technology of graphic production or something else
+	- avoid distorting what the data have to say
+	- present many numbers in a small space
+	- make large data sets coherent
+	- encourage the eye to compare different pieces of data
+	- reveal the data at several levels of detail, from a broad overview to the fine structure
+	- serve a reasonably clear purpose: description, exploration, tabulation or decoration
+	- be closely integrated with the statistical and verbal descriptions of a data set.
+
+	Graphics reveal data. Indeed graphics can be more precise and revealing than
+	conventional statistical computations.
+
+.caption Tufte 2009 _The_Visual_Display_of_Quantitative_Information_.
+
+* Appropriate tooling
+
+Major consideration in bioinformatics is the use of appropriate tools.
+
+Pattern and feature detection is (currently) still an area where the brain is state of the art.
+
+Needs help though — partially digest data into a form that is cognitively comprehensible and to draw out features of the data.
+
+- visual representation
+- reduce dimensionality
+- associate similar entities*
+- highlight possible features*
+
+All these things depend on having some understanding of the question being asked and having an imagination in what is likely to be useful — this is much more of an art form.
+
+
+* Dimensionality reduction
+
+Dimensionality reduction is the act of reducing the number of variables being considered.
+
+A common approach to dimensionality reduction in data visualisation is *Principle*Components*Analysis*.
+PCA linearly transforms a dataset so that it is arranged on a new set of axes which are sorted in decreasing order of data variance. This allows low variance axes (dimensions) to be omitted.
+
+.image http://4.bp.blogspot.com/-pleL0HvLUgU/UYqpNFdd8EI/AAAAAAAAAHA/uf11u9lcq5g/s1600/PCA_1.png _ 600
+
+.caption [[http://mengnote.blogspot.co.uk/2013/05/an-intuitive-explanation-of-pca.html][An intuitive explanation of PCA (Principal Component Analysis)]]
+
+
+* Dimensionality reduction — PCA
+
+.image http://massgenomics.org/wp-content/uploads/2012/11/worldwide-pca-analysis.jpg 450 _
+
+.caption African: YRI, LWK, ASW; European; CEU, TSI, GBR, FIN, IBS; East Asian: CHB, JPT, CHS; Americas: MXL, CLM, PUR
+.caption [[http://massgenomics.org/2012/11/human-genetic-variation-1000-genomes.html][Human genetic variation mapped in 1,000 genomes]]
+
+
+* Clustering
+
+Clustering is simply* the process of grouping items such that more similar items are closer by some metric.
+
+There are a number of ways that clustering can be performed — a course in itself.
+
+.image visualisation/zhang.png 380 _
+
+.caption Zhang Ziyi's (章子怡) co-star neighbourhood.
+# costar = g.M().In("/film/performance/actor").In("/film/film/starring")
+#
+# function getCostars(x) {
+#  return g.V(x).As("source").In("name")
+#          .Follow(costar).FollowR(costar)
+#          .Out("name").As("target")
+# }
+#
+# function getActorNeighborhood(primary_actor) {
+#  actors = getCostars(primary_actor).TagArray()
+#  seen = {}
+#  for (a in actors) {
+#    g.Emit(actors[a])
+#    seen[actors[a].target] = true
+#  }
+#  seen[primary_actor] = false
+#  actor_list = []
+#  for (actor in seen) {
+#    if (seen[actor]) {
+#      actor_list.push(actor)
+#    }
+#  }
+#  getCostars(actor_list).Intersect(g.V(actor_list)).ForEach(function(d) {
+#    if (d.source < d.target) {
+#      g.Emit(d)
+#    }
+#  })
+# }
+#
+# getActorNeighborhood("Zhang Ziyi")
+
+* Decoration
+
+A number of visual components can be used to aid the eye:
+
+- colour
+- shape
+- location
+- links
+- _etc._
+
+
+* Colour and location
+
+.image visualisation/hen.png 500 _
+
+.caption Overview of piRNA expression by piRNA length and location.
+
+
+* Shape
+
+.image http://vidi.cs.ucdavis.edu/images/publications/414.png 500 _
+
+.caption Chan _et_al._ [[http://vis.cs.ucdavis.edu/~yhcchan/myPaper/tvcg_gss.pdf][doi:10.1109/TVCG.2013.20]] (more interesting work [[http://vidi.cs.ucdavis.edu/research/visualanalytics][here]])
+
+
+* Linking features
+
+# The 24 individual chromosomes (1..22 [each present in pairs in the genome], X, Y)
+# are arranged circularly (C), and represented by labeled (C3) ideograms on which
+# the distance scale is displayed (C1).
+#
+# Some chromosomes are shown at different physical scales to illustrate the rich
+# pattern of the data (chr2 3x; chrs 18,19,20,21,22 2x; chrs 3,7,17 10x). Within
+# each ideogram, cytogenetic bands are shown (C2). These are large-scale features
+# used in cytogenetics to locate and reference gross changes.
+#
+# On the outside of the ideograms, genomic variation between individuals and populations
+# is represented by tracks (A) and (B). The number of catalogued locations at which
+# single base pair changes have been observed within populations is shown as a
+# histogram (A). Large regions which have been seen to vary in size and copy number
+# between individuals are marked in (B).
+
+# Locations of genes associated with disease are superimposed on the ideograms (D).
+# (D3) shows the location of genes implicated in cancer (very dark red), other disease
+# (dark red) and all other genes (red). (D2) shows locations of genes implicated in
+# lung, ovarian, breast, prostate, pancreatic, and colon cancer, colored in
+# progressively darker shade of red. (D1) marks gene positions implicated in other
+# diseases such as ataxia, epilepsy, glaucoma, heart disease, neuropathy, colored
+# in progressively darker shade of red, as well as diabetes (orange), deafness (green),
+# and Alzheimer (blue) disease.
+
+# Grey lines (E) connect positions on ideograms associated with genes that participate
+# in the same biochemical pathways. The shade of the link reflects character of the gene
+# - dark grey indicates that the gene is implicated in cancer, grey in disease, and light
+# grey for all other genes. Colored links (F) connect a subset of genomic region pairs
+# that are highly similar and illustrate the deep level of similarity between genomic
+# regions (about 50% of the genome is in so-called repeat regions regions which appear
+# in the genome multiple times and in a variety of locations).
+.image http://circos.ca/intro/genomic_data/img/circos-conde-nast.png 480 _
+
+.caption Genes implicated in disease. [[http://circos.ca/intro/genomic_data/][circos.ca]]
+.caption A, B — variations; C — chromosomes; D — disease genes; E — associated by process; F — similar sequence.
+
+
+* Combination of colour, location, linking and dimensional reduction
+
+Powergraph analysis
+
+.image http://journals.plos.org/ploscompbiol/article/figure/image?size=medium&id=info:doi/10.1371/journal.pcbi.1000108.g003 400 _
+
+.caption Royer _et_al._ [[http://www.ploscompbiol.org/article/info:doi/10.1371/journal.pcbi.1000108][doi:10.1371/journal.pcbi.1000108]]
+
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-12-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-13-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-14-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-15-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-16-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-17-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-54-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image http://pubs.acs.org/appl/literatum/publisher/achs/journals/content/jprobs/2012/jprobs.2012.11.issue-3/pr201036j/production/images/medium/pr-2011-01036j_0002.gif 500 _
+
+.caption Mäkinen _et_al._ [[http://pubs.acs.org/doi/full/10.1021/pr201036j][doi:10.1021/pr201036j]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-47-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-50-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]
+
+* Visualisation — an aid for reasoning about data
+
+.image visualisation/metabolic-phenotypes-of-diabetic-kidney-disease-villepetteri-mkinen-53-1024.jpg 500 _
+
+.caption Mäkinen [[http://www.slideshare.net/AustralianBioinformatics/metabolic-phenotypes-of][Metabolic Phenotypes Of Diabetic Kidney Disease]]

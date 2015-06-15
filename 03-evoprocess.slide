@@ -1,0 +1,575 @@
+# Copyright ©2014 Dan Kortschak and The University of Adelaide. All rights reserved.
+
+evolutionary processes
+
+Dan Kortschak
+Bioinformatics Group
+dan.kortschak@adelaide.edu.au
+
+# http://evolution-textbook.org is a good resource.
+
+* Evolution
+
+# This needs to be on a normal slide.
+.html code/mathjax.html
+
+Evolution is the central underpinning theory in biology.
+
+Without a grounding theory explaining the origin of biological structure and the existence of similar features in related organism, much of modern biology is essentially meaningless.
+
+Neo-Darwinian evolution is such a theory — in fact the only reasonable theory that we have.
+
+By reference to neo-Darwinian theory it is possible to explain why biotechnological techniques work and to justify the use of non-human species as models for human biology.
+
+
+* Evolution
+
+Evolution is the change in the genetically* inherited characteristics of biological populations over successive generations.
+
+In Darwin's words: _"descent_with_modification"_
+
+This is the result of the interplay of *random*change*, and *selection* or *drift**.
+
+- *random*change* increases population diversity
+- *selection* and *drift* reduce population diversity
+
+
+* Evolution
+
+General thesis: given a population of individuals:
+
+- mutation is inevitable and increases the population's genetic diversity
+- the fittest individuals will leave the most/greatest number of fertile progeny
+- progeny will be largely like their parents
+- fitness is at least partially heritable
+
+But also:
+
+- random fluctuations are important (particularly in small populations)
+
+
+* Evolution — selection
+
+.image http://evolution-textbook.org/content/free/figures/17_EVOW_Art/01_EVOW_CH17.jpg _ 950
+
+
+* Evolution — drift
+
+.image http://evolution-textbook.org/content/free/figures/15_EVOW_Art/00_EVOW_CH15.jpg 550 _
+
+* Evolution — drift
+
+.image http://evolution-textbook.org/content/free/figures/15_EVOW_Art/02_EVOW_CH15.jpg 900 _
+
+
+* Evolution
+
+Evolutionary change is thus the accumulation of random genetic changes through time.
+
+To simplify analysis, evolutionary change is considered to be a Markov process — a random process that is not influenced by previous states.
+
+- evolution has *no*memory* of previous genotypes or phenotypes
+- evolution is *not*directed* to any end goal
+
+The Markov property is important for reconstructing evolutionary histories.
+
+
+* Trees
+
+# Discuss the path taken by a population along the edges of the tree, highlighting
+# diversification and extinctions.
+
+.image http://www.fossilmuseum.net/Evolution/images/598px-Darwins_first_tree.jpg 550 _
+
+
+* Trees (mostly)
+
+# Reiterate the discussion of the previous slide, but also highlight the extinct
+# organisms in the internal nodes and the paths that span across branches.
+
+.image http://tolweb.org/tree/learn/concepts/ConceptsImg/LeavesAndAncestors.jpg 500 _
+
+.caption [[http://tolweb.org]]
+
+* The big picture
+
+.image http://evolution-textbook.org/content/free/figures/00END_EVOW_Art/02_EVOW_END.jpg 500 _
+
+.caption Baldauf _et_al_. 2004
+
+
+* History
+
+Earth formed approximately 4.5 billion years ago (Gya)
+
+- 3.5 Gya simple cells (prokaryotes)
+- 3 Gya photosynthesis
+- 2 Gya complex cells (eukaryotes)
+- 1 Gya multicellular life
+- 600 Mya simple animals
+- 550 Mya bilaterians, animals with a front and a back
+
+* History
+
+- 450 Mya land plants
+- 300 Mya reptiles
+- 200 Mya mammals
+- 150 Mya birds
+- 130 Mya flowers
+- 60 Mya the primates
+- 20 Mya the family Hominidae (great apes)
+
+We have been around for a remarkably small length of time — first modern humans appear ~200kya.
+
+* History
+
+Extinction event have marked significant changes in Earths biota
+
+- 2.4 Gya ago oxygen catastrophe
+- 252 Mya ago trilobites Permian–Triassic extinction event
+- 66 Mya ago non-avian dinosaurs
+
+.image http://upload.wikimedia.org/wikipedia/commons/0/06/Extinction_intensity.svg 220 _
+
+.caption Historical extinction intensity
+.caption (percentage of marine animals lost as a function of time Mya)
+
+- now
+
+
+* The Tree of Life
+
+A rough representation of evolutionary history of species.
+
+.image http://evolution-textbook.org/content/free/figures/00END_EVOW_Art/02_EVOW_END.jpg 420 _
+
+.caption Baldauf _et_al_. 2004
+
+
+* Representing evolutionary history
+
+Evolutionary history is represented as lineal connection from ancestor to descendant. This is easily represented as a fully connected directed (acyclic) graph.
+
+# after http://www.cwi.nl/combinatorial-problems-biology
+.image evoprocess/images/network.svg 150 _
+
+In the simplest case is a tree ­— as most of the previous figures have been.
+
+# after http://www.cwi.nl/combinatorial-problems-biology
+.image evoprocess/images/arborescence.svg 150 _
+
+.caption see Gregory 2008 [[http://dx.doi.org/10.1007/s12052-008-0035-x][doi:10.1007/s12052-008-0035-x]] for discussion of interpreting trees
+
+
+# Ask if any students can think of obvious cases that are not tree like.
+
+
+* Trees
+
+A *tree** is a special case of a generalised graph:
+
+- any two nodes in the graph can be connected by a *unique*path*
+# We are using tree in the graph theory sense loosely since I'm not
+# excluding arboresences which are what was shown in the previous slide.
+# Trees represent a branching pattern of connection.
+
+# after http://www.cwi.nl/combinatorial-problems-biology
+.image evoprocess/images/tree.svg 150 _
+
+Branches may have lengths which signify one of:
+
+- an arbitrary distance measure
+- the number of mutations
+- the product of time and the mutation rate
+
+* Trees
+
+Trees can be rooted (where there is an implied directionality to the edges)…
+
+# after http://www.cwi.nl/combinatorial-problems-biology
+.image evoprocess/images/tree.svg 140 _
+
+… or unrooted (where direction is not specified).
+
+.image evoprocess/images/unrooted.svg 180 _
+
+These are actually the same tree*, but signify different meanings.
+
+* Trees
+
+A rooted tree where all leaves are equally distant from the root is ultrametric — this implies a molecular clock which may be argued to provide an inference on the temporal history of the taxa.
+
+.image evoprocess/images/ultrametric.svg 190 _
+.image evoprocess/images/not-ultrametric.svg 190 _
+
+* Constructing trees
+
+Phylogenies can be constructed for any evolving entity.
+
+All the previous phylogenies shown have been for species/genus/family.
+
+Sequence (or other more limited set of character) phylogenies are generally what we work with. They may disagree with species trees, but can be reconciled.
+
+# Explain terms in diagram.
+
+.image http://ars.els-cdn.com/content/image/1-s2.0-S0169534798014384-gr3.jpg
+
+.caption Page and Charleston 1998 [[http://doi.org/10.1016/S0169-5347(98)01438-4][doi:10.1016/S0169-5347(98)01438-4]]
+
+
+* Constructing trees
+
+Reconciliation of gene tree with species tree:
+
+# Walk through this example.
+
+# The original lectures excised the text and presented only the trees.
+.image http://ars.els-cdn.com/content/image/1-s2.0-S0169534798014384-gr4.gif 450 _
+
+.caption Page and Charleston 1998 [[http://doi.org/10.1016/S0169-5347(98)01438-4][doi:10.1016/S0169-5347(98)01438-4]]
+
+* Gene relationships
+
+*Homology* is relationship due to common descent — is observable as _similarity_in_context_.
+
+*Paralogy* is homology within a species. *Orthology* is homology across species boundaries.
+
+# Describe causes and effects of paralogy: seg dups, retroelements and sub/neo-functionalisation.
+
+.image http://bib.oxfordjournals.org/content/12/5/379/F1.large.jpg _ 600
+
+.caption Kristensen _et_al_. 2011 [[http://dx.doi.org/10.1093/bib/bbr030][doi:10.1093/bib/bbr030]]
+
+
+* Difficulties
+
+Paralogy can obscure relationships.
+
+# http://www.sciencedirect.com/science/article/pii/S0169534798014384
+.image evoprocess/images/confound.gif _ 900
+
+.caption after Page and Charleston 1998 [[http://doi.org/10.1016/S0169-5347(98)01438-4][doi:10.1016/S0169-5347(98)01438-4]]
+
+
+* Phylogenetic inference
+
+Start with a set of comparative data (observations):
+
+- commonly sequence
+- phenotypic traits
+- other molecular characteristics
+
+Model relationships between the entities based on *similarity* or *history*:
+
+- *similarity* may be simply a matrix of distance/similarity measures
+- *history* requires some underlying model that describes the relationship between observations and the evolutionary process
+
+Represent that as a tree (or other appropriate graph) and assess confidence.
+
+
+* Phylogenetic methods — criteria
+
+Distance: how similar are the data?
+
+- Neighbour Joining, UPGMA
+
+Maximum Parsimony: what is the tree with the fewest changes?
+
+- Fitch's algorithm, Sankoff's algorithm
+
+Maximum Likelihood: which tree* is most likely to agree with the data given a particular evolutionary model?
+
+- calculate probability of observed changes along branches according to model
+
+
+* Distance Methods
+
+Define metric to measure the distance between two sequences:
+
+- sequence similarity/difference
+- mutational distance
+- phenotypic difference
+- _etc_.
+
+Calculate a distance matrix:
+
+- pairwise distance matrix
+
+Use a tree-building algorithm to represent that distance matrix as a tree, e.g. NJ or UPGMA which both reconcile conflicting branch length by averaging:
+
+- Neighbour Joining: maintains rate differences
+- UPGMA: _forces_ ultrametric tree
+
+
+* Distance tree construction
+
+UPGMA:
+
+- identify the most similar pair of taxa — smallest \(\begin{equation}D_{i,j}\end{equation}\) in distance matrix
+- place each at the end of a branch from an internal node \(\begin{equation}u\end{equation}\) with \(\begin{equation}D_{i,u}\end{equation}\) and \(\begin{equation}D_{j,u}\end{equation}\) of length \(\begin{equation}D_{i,j}/2\end{equation}\)
+- merge the two taxa into a composite group \(\begin{equation}i/j\end{equation}\)
+- create a new matrix recalculating the distances to each composite group as the average of all pairwise comparisons \(\begin{equation}D_{k,i/j} = \frac{n_i \centerdot D_{k,i} + n_j \centerdot D_{k,j}}{n_i+n_j}\end{equation}\) where \(\begin{equation}n_i\end{equation}\) and \(\begin{equation}n_j\end{equation}\) are the number of taxa in each group
+- iterate until all taxa have been added
+
+
+* Distance tree construction
+
+Neighbour Joining:
+
+- identify the pair of taxa most similar compared to the average — smallest \(\begin{equation}D_{i,j}-\frac{d_i + d_j}{n-2}\end{equation}\), where \(\begin{equation}d_x = \sum D_{x,k}\end{equation}\)
+- place each at the end of a branch from an internal node \(\begin{equation}u\end{equation}\) with \(\begin{equation}D_{i,u} = \frac{D_{i,j}+d_i-d_j}{2}\end{equation}\) and \(\begin{equation}D_{j,u} = \frac{D_{i,j}+d_j-d_i}{2}\end{equation}\)
+- merge the two taxa into a composite group \(\begin{equation}i/j\end{equation}\)
+- calculate a new matrix recalculating the distances to each composite group as the average of all pairwise comparisons \(\begin{equation}D_{k,i/j} = \frac{D_{k,i} + D_{k,j} - D_{i,j}}{2}\end{equation}\)
+- iterate until all taxa have been added
+
+
+* Distance tree construction
+
+.image https://upload.wikimedia.org/wikipedia/en/c/cf/Neighbor_joining_7_taxa_start_to_finish_diagram.svg 500 _
+
+.caption [[http://en.wikipedia.org/wiki/Neighbor_joining]]
+
+
+* Phylogenetic methods — searching for best trees
+
+NJ and UPGMA do not depend on searching for trees — they naturally produce a tree as a result of the algorithm.
+
+Maximum Parsimony and Maximum Likelihood make comparisons between trees based on the specified criterion. There are a lot of trees to compare!
+
+\begin{equation}N_{trees\,with\,n\,leaves} = \prod_{i=2}^{n-1}(2i-3)\end{equation}
+
+.image evoprocess/images/trees.png
+
+* Phylogenetic methods — searching for best trees
+
+# http://www.informatics.indiana.edu/predrag/classes/2004falli400/2004falli400.htm
+# http://www.informatics.indiana.edu/predrag/classes/2004falli400/swafford.pdf
+.image evoprocess/images/exhaustive.png 520 _
+
+.caption Swofford 2004 [[http://www.informatics.indiana.edu/predrag/classes/2004falli400/swafford.pdf][Lecture notes]]
+
+
+* Phylogenetic methods — searching for best trees
+
+Exact:
+
+- exhaustive search — not feasible for anything but small datasets
+- branch-and-bound search ­— improvement on exhaustive
+
+Approximate:
+
+- heuristic search methods — "good enough answer" usable even for large datasets
+
+
+* Parsimony Methods
+
+Parsimony methods are based on the notion that the simplest explanation is the preferable one.
+
+_Small_parsimony_problem_ — determine the score for a given tree.
+
+_Large_parsimony_problem_ — find the tree with the lowest score (remember there are many trees).
+
+
+* Parsimony Scoring — Fitch
+
+Working from leaves to root (_i.e._ a post-order traversal of the tree):
+
+\begin{equation}(S_p, c_p) = \Bigg\{\begin{array}{l l}(S_l \bigcup S_r, 1) \; if\,S_l \bigcap S_r = \emptyset\\(S_l \bigcap S_r, 0) \; otherwise.\end{array}\end{equation}
+
+Where \(\begin{equation}S\end{equation}\) is the set of acceptable states at each node.
+
+Then \(\begin{equation}n_{changes} = \sum_{i \in N} c_i\end{equation}\) where \(\begin{equation}N\end{equation}\) is the set of internal nodes in the tree.
+
+.image evoprocess/images/parsimony-up.png 200 _
+
+.caption Vingron _et_al_. Algorithms for Phylogenetic Reconstructions [[http://lectures.molgen.mpg.de/Algorithmische_Bioinformatik_WS0405/phylogeny_script.pdf][Lecture notes and exercises]]
+
+
+* Parsimony Scoring — Fitch
+
+Work from root to leaves (_i.e._ a pre-order traversal of the tree) selecting state \(\begin{equation}s_c\end{equation}\) for child node \(\begin{equation}c\end{equation}\) with parent node \(\begin{equation}p\end{equation}\):
+
+\begin{equation}s_c = \Bigg\{\begin{array}{l l}s_p, \; if\,s_p \in S_c\\any \in S_c \; otherwise.\end{array}\end{equation}
+
+.image evoprocess/images/parsimony-down.png 250 _
+
+.caption Vingron _et_al_. Algorithms for Phylogenetic Reconstructions [[http://lectures.molgen.mpg.de/Algorithmische_Bioinformatik_WS0405/phylogeny_script.pdf][Lecture notes and exercises]]
+
+
+* Parsimony Scoring — Fitch
+
+This process is performed for each column* of the alignment and the number of changes is summed to give the total cost for the tree.
+
+All candidate trees are then compared to find the tree with the lowest cost.
+
+.html evoprocess/code/parsimony.html
+
+
+* Parsimony Scoring — Sankoff
+
+The Sankoff algorithm is a generalisation of Fitch scoring that allows different transitions to score different costs.
+
+This requires that a transition scoring matrix be added and costs for each letter be retained during the tree traversals.
+
+.image evoprocess/images/sankoff.png 340 _
+
+.caption Vingron _et_al_. Algorithms for Phylogenetic Reconstructions [[http://lectures.molgen.mpg.de/Algorithmische_Bioinformatik_WS0405/phylogeny_script.pdf][Lecture notes and exercises]]
+
+
+* Parsimony — Problems
+
+Parsimony reconstruction is not statistically stable — adding more sequence may reduce statistical support for the tree.
+
+Parsimony is biased in its reconstruction.
+
+.image evoprocess/images/felsenstein.svg 350 _
+
+
+* Likelihood vs Probability
+
+\(\begin{equation}D\end{equation}\): data, \(\begin{equation}H\end{equation}\): hypothesis, \(\begin{equation}|\end{equation}\): given
+
+Probability: \(\begin{equation}P(D|H)\end{equation}\)
+
+- chance the data would be observed given that the (usually null) hypothesis is true
+
+Likelihood: \(\begin{equation}L(H|D)\end{equation}\)
+
+- chance the hypothesis is true given that the data were observed
+
+
+* Likelihood Methods
+
+Likelihood methods are based on a model of sequence evolution.
+
+The likelihood of a site pattern on a tree is the sum of the probabilities over all of the possible unknown states at internal nodes in the tree.
+
+The likelihood of a tree is then the product of likelihood for all sites.
+
+Log-likelihood usually used — improves numerical stability and computational performance.
+
+
+* Likelihood Methods
+
+Basic components of a likelihood model:
+
+- tree — topology and edge lengths \(\begin{equation}t_{1..n}\end{equation}\)
+- letter frequencies — \(\begin{equation}\pi_A\end{equation}\), \(\begin{equation}\pi_C\end{equation}\), \(\begin{equation}\pi_G\end{equation}\) and \(\begin{equation}\pi_T\end{equation}\)
+- substitution rates — gives transition matrix \(\begin{equation}P(t)\end{equation}\)
+
+# Note that \pi is stationary and the matrix is reversible - hence absence
+# of direction on edges. We could start at any leaf in the following:
+
+.image evoprocess/images/likelihoodState.png 200 _
+
+\(\begin{equation}Prob = \pi_T \centerdot p_{T,A}(t_1) \centerdot p_{A,T}(t_2) \centerdot p_{A,A}(t_3) \centerdot p_{A,G}(t_4) \centerdot p_{A,C}(t_5)\end{equation}\)
+
+.caption Pedersen 2014 [[https://www.coursera.org/course/molevol]] with permission
+
+* Likelihood Methods
+
+.image evoprocess/images/likelihood.png 500 _
+
+.caption Pedersen 2014 [[https://www.coursera.org/course/molevol]] with permission
+
+
+* Likelihood Methods
+
+Transition matrices are defined by the model being used.
+
+Jukes Cantor (JC)
+
+- all substitutions are equally likely
+- all letters are equally frequent
+
+Kimura 2 Parameter (K2P)
+
+- JC + transitions and transversions occur at different rates
+
+HKY model
+
+- K2P + individual letter frequencies
+
+General Time Reversible (GTR)
+
+- HKY + individual letter transition rates
+
+
+* Likelihood Methods — Additional parameterisation
+
+Rate heterogeneity — not all sites mutate at the same rate.
+
+- \(\begin{equation}\Gamma\end{equation}\) (gamma) model uses a shape parameter \(\begin{equation}\alpha\end{equation}\) (a second parameter \(\begin{equation}\beta = 1/\alpha\end{equation}\)) and the \(\begin{equation}\Gamma\end{equation}\) distribution to model heterogeneous rates
+
+#png("GammaDistribution.png", height=300, width=600)
+#require("ggplot2")
+#max <- 2
+#ggplot(NULL, aes(x=x, colour = alpha)) +
+#	stat_function(data = data.frame(x = 0:max, alpha = factor(1)), fun = function(x) { dgamma(x, shape=0.1, rate=0.1) }) +
+#	stat_function(data = data.frame(x = 0:max, alpha = factor(2)), fun = function(x) { dgamma(x, shape=1.25, rate=1.25) }) +
+#	stat_function(data = data.frame(x = 0:max, alpha = factor(3)), fun = function(x) { dgamma(x, shape=2, rate=2) }) +
+#	stat_function(data = data.frame(x = 0:max, alpha = factor(4)), fun = function(x) { dgamma(x, shape=4, rate=4) }) +
+#	stat_function(data = data.frame(x = 0:max, alpha = factor(5)), fun = function(x) { dgamma(x, shape=8, rate=8) }) +
+#	stat_function(data = data.frame(x = 0:max, alpha = factor(6)), fun = function(x) { dgamma(x, shape=16, rate=16) }) +
+#	scale_colour_manual(values = c("red", "orange", "yellow", "green", "blue", "violet"), labels = c(0.1, 1.25, 2, 4, 8, 16)) + scale_colour_discrete(name=expression(paste(alpha, " value"))) +
+#	ylab(label="density")
+#dev.off()
+.image evoprocess/images/GammaDistribution.png 280 _
+
+- per site rates (risk of over-fitting — fit the data but not the underlying process)
+
+Invariant sites — some sites do not change at all.
+
+* Genes to genomes
+
+Constructing genome phylogenies is more involved than the simple gene/sequence problem already presented.
+
+A gene is alignable, a genome may not be.
+
+- genes may be translocated
+- chromosomes may be fused or broken
+- new genes may have evolved or been lost
+
+How do we deal with this?
+
+Simple way is to work with limited sets of othologous genes.
+
+What if you really need a whole genome comparison?
+
+Identify conserved synteny blocks, or regions of genomes that correspond between the two species.
+
+
+* Lining up chromosomes — Comparisons of two genomes
+
+This is either done by chromosome painting (wet lab) or genome sequence comparison (bioinformatic analysis — non trivial).
+
+# http://www.nature.com/nature/journal/v420/n6915/fig_tab/nature01262_F3.html
+# Mouse cf. Human
+.image http://www.nature.com/nature/journal/v420/n6915/images/nature01262-f3.2.jpg
+
+.caption Chinwalla _et_al_. 2002 [[http://dx.doi.org/10.1038/nature01262][doi:10.1038/nature01262]]
+
+
+* Selective forces
+
+A non-coding region with no function can evolve without constraint.
+
+A gene that has an essential function can only change if the function is maintained.
+
+A gene that is under pressure to change will have selection for mutations.
+
+
+* Evolutionary consequences
+
+For sequences generally:
+
+- *constrained* sequences will evolve more *slowly* (some changes will be lethal)
+- *unconstrained* sequences will evolve *more*rapidly*
+
+Within protein-coding regions:
+
+- *constrained* sequences will show *more*synonymous*mutations*
+- *unconstrained* sequences can have *higher*levels* of *non-synonymous*mutations*
+- sequences under *diversifying*pressure* may have even *higher*levels* of *non-synonymous*mutations* — this is complicated by other factors and may be misleading
+
+Mutation rate is essentially constant* but relative fitness of different genotypes alters the proportion of each in the population — selection makes the change.

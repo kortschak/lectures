@@ -1,0 +1,545 @@
+# Copyright ©2014 Dan Kortschak and The University of Adelaide. All rights reserved.
+
+bioinformatics
+
+Dan Kortschak
+Bioinformatics Group
+dan.kortschak@adelaide.edu.au
+
+* Introduction
+
+* What is Bioinformatics?
+
+"Research, development, or application of computational tools and approaches for exapanding the use of biological ... data, including those to ... organise... analyse or visualize such data."
+
+.caption [[http://www.bisti.nih.gov/docs/CompuBioDef.pdf][NIH Biomedical Information Science and Technology Initiative Consortium]]
+
+"[T]he application of computer technology to management and analysis of biological data."
+
+.caption [[https://www.embl.de/aboutus/communication_outreach/publications/Brochures/EBI_brochure.pdf][EMBL European Bioinformatics Institute]]
+
+"The use of computers to handle biological information."
+
+.caption [[http://books.google.com.au/books?id=NxXaBVTSgeQC&lpg=PA3&ots=w68Y_nzjbk&dq=%22The%20use%20of%20computers%20to%20handle%20biological%20information%22%20syngenta&pg=PA3#v=onepage&q=%22The%20use%20of%20computers%20to%20handle%20biological%20information%22%20syngenta&f=false][Syngenta]] (Biotech company)
+
+
+* What data do we look at?
+
+Essentially collections of related data:
+
+Genome
+
+- an organism's _inherited_ genetic information
+
+Transcriptome
+
+- the transcriptional state of an organism, tissue, cell or sample
+
+Proteome, Metabolome, Interactome, Methylome, etc. ...
+
+- the protein expression, metabolic, interaction, etc. ... state of a sample
+
+Metagenome
+
+- genomes of whole communities of organisms
+
+
+* Why do we do this?
+
+Living systems involve complex interactions between large numbers of components.
+
+Finding patterns in biological data allows us to see how living systems function.
+
+Using large data sets, we can find subtle associations between parts and processes:
+
+- genotype vs. disease state, product output, pathogen virulence
+- transcriptional state vs. patient response to treatment
+- _etc_.
+
+* Why do we do this?
+
+Extending our range of data allows a richer space of phenotypes and genotypes to explore.
+
+We can use evolutionary history to perform deeper analyses:
+
+- comparative analysis across species
+- origins of evolutionary innovations
+- provide insight to design useful new traits in commercially important species and models for human disease
+
+
+* Applications
+
+* What can we do with these data?
+
+Genome data allows us to examine:
+
+- variation within/between species
+- genome organisation and evolution, gene origin and functions
+- changes resulting from disease such as cancer
+
+Transcriptome data allows us to examine:
+
+- gene activity in different conditions/tissues/strains/samples
+- parental origin of expressed genes
+- alternative splicing of mRNAs
+
+Other-ome data allows us to examine:
+
+- which parts of a genome talk to each other (Interactome)
+- which small molecules are active/changing in a sample (Metabolome)
+
+
+* Genomics
+
+Genomics is the examination and interpretation of roles genomic sequences.
+
+Many choices of input material and analytical approach:
+
+- Species, strain, individual
+- Sequencing technology and strategy
+- _de_novo_ vs. resequencing (assembly vs. alignment)
+
+
+* Genome sizes
+
+# This slide is to raise the issue that the sizes of problems dealt
+# with in genomics range widely, but also significantly, that they
+# can be very large.
+# The following few slides extend on this, including showing that
+# the problems are not well defined (although improving) and
+# providing comparisons between human and common models.
+
+.image http://www.sciencemag.org/content/338/6108/758/F1.medium.gif 500 _
+
+.caption Fedoroff 2012 [[http://dx.doi.org/10.1126/science.338.6108.758][doi:10.1126/science.338.6108.758]]
+
+* Human Genome structure
+
+A history of reducing estimates.
+
+- 1969: 2,000,000 genes
+
+- 2000 estimated: 120,000 genes
+
+- 2001 (draft HGP): 35,000-75,000 genes
+
+- 2004 ("finished" HGP): 20,000-25,000 genes
+
+Current estimate: 22,000 genes
+
+
+* Human Genome structure
+
+≈ 3x10⁹ base pairs (x 2 copies)
+
+- 1000x Bacteria, 10x Pufferfish, 0.02x Lungfish*
+
+# Lungfish is really just crazy and probably derived.
+# http://www.nature.com/hdy/journal/v99/n2/full/6800981a.html
+
+≈ 1.5% exons
+
+≈ 22,000 genes
+
+- 4x Yeast, 1.5x Fruit fly, 0.3x _Trichomonas_vaginalis_ *
+
+# T.vaginalis - many genes are tenuously supported, so may estimate downwards.
+
+≈ 50% repeats
+
+- Maize: 66%, Chicken: 10%
+
+
+* Genome sequencing
+
+* DNA Sequencing technology
+
+DNA sequencing is cheap now:
+
+- currently: $1 per million bases
+- 10 years ago: $1 per thousand bases
+
+Sequencing technology changes have driven this reduction.
+
+First, Second, Third Generation sequencing:
+
+- First: one sequence per PCR
+- Second: millions of sequences per PCR
+- Third: single molecule sequencing without PCR
+
+
+* DNA Sequencing technology
+
+.image bioinformatics/images/sequencer.jpg 500 _
+
+.caption "My new DNA sequencer." — Dave Adelson
+
+
+* DNA Sequencing technology
+
+This is not as happy as it might seem.
+
+
+* Moore's Law
+
+Observation that the number of components in electronic devices doubles approximately every two years due to reduced cost per component.
+
+.image http://www.synthetic-bestiary.com/wp-content/uploads/MooresLaw.jpg 400 _
+
+.caption [[http://www.synthetic-bestiary.com/learn/the-genetic-revolution]]
+
+
+* Sequencing costs
+
+The introduction of modern sequencing technology has allowed sequencing costs to exceed Moore's Law.
+
+.image http://www.genome.gov/images/content/cost_genome.jpg 360 _
+
+.caption [[http://www.genome.gov/sequencingcosts]]
+
+
+* Moore's Wall
+
+Where sequencing data rate exceeds capacity to analyse the data.
+
+.image https://euroepinomics.files.wordpress.com/2012/06/genome3.jpg 400 _
+
+.caption [[http://channelopathist.net/2012/06/06/be-literate-when-the-exome-goes-clinical]]
+
+
+* How did this happen?
+
+Next generation sequencing _e.g._ Illumina HiSeq 2000
+
+# Note that this slide was split over two slide in the original lectures.
+
+.image http://seqanswers.com/forums/images/content/ilmn-step7-12.jpg 450 _
+
+.caption [[http://seqanswers.com/forums/showpost.php?s=9162dd2946431464fc1bbabb0f1e0502&p=32&postcount=1][Illumina]] 2007
+
+* How did this happen?
+
+Next generation sequencing _e.g._ Illumina HiSeq 2000
+
+.image http://bioinformatics.oxfordjournals.org/content/25/17/2194/F1.large.jpg 400 _
+
+.caption Whiteford _et_al_. 2009 [[http://dx.doi.org/10.1093/bioinformatics/btp383][doi:10.1093/bioinformatics/btp383]]
+
+
+* Introducing!
+
+.image http://www.nature.com/polopoly_fs/7.16216.1395137087!/image/1000dollar-genome-top.jpg_gen/derivatives/landscape_630/1000dollar-genome-top.jpg 450 _
+
+.caption Nature 507, 294–295 [[http://dx.doi.org/10.1038/507294a][doi:10.1038/507294a]]
+
+* What this means
+
+Illumina has announced the HiSeq X, capable of 340 genomes per week at a cost of $1000 per genome.
+
+"As a computationalist, this announcement from Illumina and the prospect of a $1000 genome is actually quite horrifying because the end of that $1000 sequencing process is only the very beginning of the computational demands associated with genome sequencing."
+
+.caption [[http://glennklockwood.blogspot.com/2014/01/the-1000-genome-computational.html]]
+
+* What this means
+
+History of computational effort over a two month project with similar data mass as one week's output from a HiSeq X.
+
+# This slide is intended to show both the mass and the spikiness of
+# computational resource use that is likely to result from HiSeqX adoption.
+
+.image http://1.bp.blogspot.com/-sqmCPG0mKnU/UtYog4cD40I/AAAAAAAAKMg/IaV1huglGO4/s1600/Job+History.png 400 _
+
+.caption [[http://glennklockwood.blogspot.com/2014/01/the-1000-genome-computational.html]]
+
+
+* Using the data
+
+* Melanoma
+
+# A brief introduction explaining the importance of this health issue.
+
+A significant health burden on the Australian population.
+
+# Genomics can be used to find genetic variants that predispose individuals
+# to this disease - this can be used to direct preventative measures and may
+# suggest approaches to treatments. For example:
+
+.image https://visualsonline.cancer.gov/retrieve.cfm?imageid=9186&dpi=150&fileformat=jpg 400 _
+
+.caption [[http://visualsonline.cancer.gov/details.cfm?imageid=9186]]
+
+* Human heritable diseases susceptibility
+
+Phospholipase A2 variant associated with increased risk of melanoma (by GWAS).
+
+.caption Bishop _et_al_. 2009 [[http://dx.doi.org/10.1038/ng.411][doi:10.1038/ng.411]]
+
+# Example in SNP track.
+.image bioinformatics/images/chr22.png
+.image bioinformatics/images/hgt_genome_3918_983e20.png
+
+
+* Gene expression
+
+# Transcriptomic data in conjunction with genomic data can be used to
+# determine levels of gene expression. The two data sets are complementary;
+# transcriptomic data helps refine and validate genomic information, e.g.
+# gene models.
+#
+# Note that only the alignment and alignment profile was included in the
+# original lectures.
+
+.image http://www.nature.com/nrg/journal/v10/n1/images/nrg2484-f1.jpg 500 _
+
+.caption Wang _et_al_. 2009 [[http://dx.doi.org/10.1038/nrg2484][doi:10.1038/nrg2484]]
+
+
+* Gene expression
+
+# This slide just shows a real-world example of how these kinds of data
+# are visualised.
+
+.image bioinformatics/images/WT-F2-Rep1vsMut-F2_Rep1_IGV.png 500 _
+
+
+* Problem size
+
+* Big data sets
+
+One DNA sequence run = 1 terabyte (10¹² bytes)
+
+Efficient algorithms are needed for sequence analysis:
+
+- assemble sequence reads _de_novo_
+- align sequence reads to a reference genome
+
+Genome analysis:
+
+- find genes, variants, regulatory elements, evolutionary important regions
+
+Transcriptome analysis:
+
+- identify transcripts, determine expression levels, control for experiment bias
+
+
+* Aligning reads
+
+# Brief comment on BWS - mention that it will be discussed further in
+# a later lecture.
+
+Burrows-Wheeler search
+
+.image http://bioinformatics.oxfordjournals.org/content/25/14/1754/F2.medium.gif
+
+.caption Li and Durbin 2009 [[http://dx.doi.org/10.1093/bioinformatics/btp324][doi:10.1093/bioinformatics/btp324]]
+
+* Viewing alignments
+
+# This is again, just an example of how these data may be viewed - including
+# the inset box which gives detailed information on a single read mapping.
+# The point here is that good tools are needed to deal with the very large
+# datasets we use. Human visualisation may not be the best approach!
+
+.image bioinformatics/images/igv.png 500 _
+
+* Common features are informative
+
+# The following two slide take images from "Evolutionarily conserved elements
+# in vertebrate, insect, worm, and yeast genomes" which is the phastCons paper.
+#
+# Note that in the original lecture these were split over two slides to make
+# them easier to read. They are joined in the original paper, so we put them
+# on one slide to avoid the need to include as an asset.
+#
+# "exons 7–11 of the RNA-edited human gene GRIA2 are shown. Peaks in the
+# conservation plot generally correspond to exons and valleys to noncoding
+# regions, but a 158-bp conserved noncoding element can be seen near the 3′
+# end of exon 11. This conserved element includes the editing complementary
+# sequence (ECS) of the RNA editing site in exon 11.""
+#
+# "the S. cerevisiae GAL1 gene and 5′-flanking region are shown. Strong
+# cross-species conservation can be seen in the regulatory region upstream
+# of the promoter, as well as in the protein-coding portion of the gene.
+# The conserved element shown at bottom overlaps three GAL4-binding sites
+# (highlighted in base-level view). A fourth GAL4-binding site also is
+# reflected by a small bump in the conservation scores (left arrow), as is
+# the promoter itself (right arrow)."
+.image http://genome.cshlp.org/content/15/8/1034/F4.large.jpg 500 _
+
+.caption Siepel _et_al_. 2005 [[http://dx.doi.org/10.1101/gr.3715005][doi:10.1101/gr.3715005]]
+
+
+* Between-species comparison
+
+# "The dot plot was generated from BLASTZ nucleotide alignments of the human
+# X chromosome assembly, before our SHIMS-based refinement (y axis), and the
+# single-haplotype mouse X-chromosome assembly (x axis); each dot represents
+# >70% nucleotide identity within a 10-kb window centered on that position.
+# Within the plot, diagonal lines indicate syntenic blocks between the two
+# chromosomes; regions lacking these diagonal lines comprise species-specific
+# sequences. Blue shading highlights divergent ampliconic regions, each >500
+# kb in length, on the mouse X chromosome. Cen., centromere."
+.image http://www.nature.com/ng/journal/v45/n9/images/ng.2705-F1.jpg 500 _
+
+.caption Mueller _et_al_. 2013 [[http://dx.doi.org/10.1038/ng.2705][doi:10.1038/ng.2705]]
+
+* Disease-causing organisms
+
+Microbes are important in our lives
+
+- sometimes good, sometimes bad
+
+Viruses/Bacteria/Protozoa
+
+- different properties and interactions with their host
+
+Bioinformatic methods
+
+- genomes — strain differences
+- transcriptomes — pathogenesis
+- metagenomes — community analysis
+
+
+* Metagenomics
+
+* Human metagenomics
+
+Human health is significantly affected by the microbial communities that we live in symbiosis with.
+
+Pathogens have an obvious impact, but other microbial species also affect human health.
+
+For example, in the gut, the microbial flora perform a number of useful functions for their host:
+
+- aiding in digestion
+- synthesising vitamins
+- producing enzymes not made by the host
+- possibly also playing a role in preventing colonisation by pathogenic species
+
+Metagenomics allows the study of the symbiosis and interactions of human genomes and genetic products, as a biological system.
+
+* The American Gut
+
+# This follows on from the previous slide - seque into this as 'This is an example
+# of analyses that follow the approach just described.'
+
+.image http://humanfoodproject.com/wp-content/uploads/2012/06/descimage8.png
+
+.caption [[http://humanfoodproject.com/americangut]]
+
+* Gut microbial community analysis
+
+# This shows the change in flora by (A) age and (B) country. (C) shows
+# the main species at each location in the PCA plot.
+
+# "Unweighted UniFrac PCoA plots illustrating the relative degree to which age,
+# cultural/geographic stratification, systematic differences in the collection
+# of samples, and sequencing method affect the observed diversity of the gut
+# microbiota. (A–C) Data from three different studies with age gradients from
+# culturally diverse populations (Global_gut, US_infant_timeseries, and
+# Italy/Burkina Faso) (Table 1). Points are colored by age gradient in A or by
+# county in B. C plots the most abundant bacterial families as a weighted
+# average of the coordinates of all samples in purple, where the weights are
+# the relative abundances of the taxon in the samples. The size of the sphere
+# representing a taxon is proportional to the mean relative abundance of the
+# taxon across all samples."
+.image http://genome.cshlp.org/content/23/10/1704/F2.large.jpg 500 _
+
+.caption Lozupone _et_al_. 2013 [[http://dx.doi.org/10.1101/gr.151803.112][doi:10.1101/gr.151803.112]]
+
+* Progression of an infant gut microbial community
+
+# "Unweighted UniFrac PCoA plot illustrating that samples from the human
+# microbiome cluster primarily by body site. Each point represents a sample
+# from one of the studies detailed in Table 1. Samples were classified broadly
+# as from the Gut (mostly feces but also colon, ileum, and rectum), vagina,
+# oral cavity (e.g., saliva, tongue, cheek), and skin and other (diverse skin
+# sites, hair, nostril, and urine). Gut samples from individuals older than
+# 2½ yr are colored brown and from individuals ages 0 to 2½ yr are colored
+# across a dark purple (0 yr) to light purple (2½ yr) spectrum. Samples from
+# one infant sampled repeatedly over the first 2½ yr of life are joined
+# together with a purple line with a decreasingly dark hue with age. The
+# infant samples are also shown in the inset. The most abundant bacterial
+# families are superimposed on the same PCoA plot in the lower panel in purple.
+# The size of the sphere representing a taxon is proportional to the mean
+# relative abundance of the taxon across all samples."
+.image http://genome.cshlp.org/content/23/10/1704/F1.large.jpg 500 _
+
+.caption Lozupone _et_al_. 2013 [[http://dx.doi.org/10.1101/gr.151803.112][doi:10.1101/gr.151803.112]]
+
+* Progression of an infant gut microbial community
+
+.html bioinformatics/code/video.html
+
+* How is this useful?
+
+Analysis of community structure can be used to identify human health states.
+
+Different cultures and diets are associated with different community structures.
+
+Similarly, different health states as associated with different communities...
+
+and it appears that the causation is not only from the health to the community that is resident.
+
+
+* Gut microbial communities in different health states
+
+# Just point to (B), but mention that confounding effects are an issue.
+
+# "Unweighted UniFrac PCoA plots illustrating a strong study effect when
+# comparing fecal samples of Western adults. (A) Studies conducted with
+# Western adult populations. (B) Clustering of the fecal samples from
+# IBD_twins (Table 1) colored by disease state. (ICD) Ileal Crohn's
+# disease, (CCD) Colonic Crohn's Disease, (UC) Ulcerative Colitis.
+# (C,D) Same as in A but with the axes rotated to maximize clustering by
+# study. D shows just the bacterial orders as a weighted average of the
+# coordinates of all samples, where the weights are the relative abundances
+# of the taxon in the samples. The size of the sphere representing a taxon
+# is proportional to the mean relative abundance of the taxon across all
+# samples. Gram-positive bacterial orders are labeled in red text and
+# Gram-negative in blue."
+.image http://genome.cshlp.org/content/23/10/1704/F3.large.jpg 500 _
+
+.caption Lozupone _et_al_. 2013 [[http://dx.doi.org/10.1101/gr.151803.112][doi:10.1101/gr.151803.112]]
+
+* Antibiotics disrupt the gut flora
+
+Adverse impact of antibiotics on gastrointestinal health:
+
+- antimicrobial treatment disrupts the gut microbiota.
+- opportunistic pathogens such as _Clostridium_difficile_ may colonise the gut mucosa
+- stimulates an immune reaction, and release toxins that cause diarrhoea and inflammation.
+
+Patients who have recurrent _C_._difficile_ infections have fewer protective microorganisms.
+
+Reintroduction of protective species recovers the normal composition of the gut flora and most patients' symptoms resolve.
+
+.caption Agito _et_al_. 2013 [[http://dx.doi.org/10.3949/ccjm.80a.12110][doi:10.3949/ccjm.80a.12110]]
+
+* Changing microbial communities and changed health status
+
+# "Unscaled principal coordinate analysis (PCoA) plots showing unweighted
+# (A) and weighted (B) UniFrac analysis of RCDI (red) and post-FMT (blue)
+# patient and healthy donor (green) samples.
+# RCDI patient samples are circled in red. RCDI samples from patient #6a (*),
+# who experienced antibiotic-induced relapse and was treated by FMT again as
+# patient #6b (**) are marked in dark red. Sample names indicate case numbers,
+# patient or donor source and time point of collection ("0" time point refers
+# to pre-FMT sampling time points; other time points are abbreviated as weeks
+# [w], months [m] and year [y])."
+.image http://journals.plos.org/plosone/article/figure/image?size=large&id=info:doi/10.1371/journal.pone.0081330.g004 _ 800
+
+.caption Song _et_al_. 2013 [[http://dx.doi.org/10.1371/journal.pone.0081330][doi:10.1371/journal.pone.0081330]]
+
+
+* Conclusions
+
+
+DNA sequencing is getting ridiculously (dangerously) cheap
+
+Powerful new tools are available (and necessary) for analysis
+
+Bioinformatics is the use of those tools
+
+- can help answer many biological questions
+
+Biology will increasingly require (at least a bit of) mathematics and computing skills

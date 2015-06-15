@@ -1,0 +1,402 @@
+# Copyright ©2014 Dan Kortschak and The University of Adelaide. All rights reserved.
+
+repeats and non-coding elements
+
+Dan Kortschak
+Bioinformatics Group
+dan.kortschak@adelaide.edu.au
+
+* Genome composition
+
+As an example, the haploid human genome is ~2.9x10⁹ bases long.
+
+Contains ~20-25,000 genes covering ~2.3% (1.2% coding) of the genome.
+
+The majority of transcribed sequence is non-coding — 57%.
+
+Almost half of the genome is repetitive sequence — 49%.
+
+.caption Frith _et_al_. 2005 [[http://dx.doi.org/10.1038/sj.ejhg.5201459][doi:10.1038/sj.ejhg.5201459]]
+
+There is clearly more complexity to the genome than just a store of information to make proteins.
+
+
+* Repeats
+
+Repetitive sequence composition can be physically determined by C₀t analysis.
+
+.image http://www.nature.com/nrg/journal/v7/n3/images/nrg1806-i1.jpg
+
+.caption Paterson 2006 [[http://dx.doi.org/10.1038/nrg1806][doi:10.1038/nrg1806]]
+
+
+* Repeats
+
+Initially interesting to bioinformaticians because they hamper genome assembly and database search.
+
+First response was to develop tools to mark/remove regions that are repetitive (or low complexity):
+
+- `DUST` — mask low complexity nucleic acid sequences (`SEG/XNU` for a.a. sequences)
+- `RepeatMasker`, `Censor` _etc_. — mask known repeats family sequences
+
+Then *ignore* them — some repeats were of interest to biologists, for example tri-nucleotide repeats known to cause some interesting genetic disorders.
+
+We now know many of these repeats are *highly*significant* in genome biology.
+
+
+* Classes of repeats
+
+Non-mobile
+
+- simple repeats: telomeric repeats, centromeric repeats, tri-nucleotide repeats, _etc_.
+- multi-gene families: rRNA genes, olfactory receptor genes, keratin genes, _etc_.
+- conserved domain encoding segments: homeobox, cadherin gene motifs, immunoglobulin motif genes, _etc_. …
+
+_but_not_interested_in_these_here._
+
+*DNA*Transposons*
+
+- elements that are able to *move* themselves from one location to another in the genome
+
+*Retrotransposons*
+
+- elements that are able to *copy* themselves from one location to another in the genome
+
+
+* DNA Transposons
+
+DNA Transposons are mobile elements that transpose via a cut-and-paste mechanism.
+
+# CC license.
+.image repeats/images/transposon.png 470 _
+
+.caption after Muñoz-López and García-Pérez 2010 [[http://dx.doi.org/10.2174/138920210790886871][doi:10.2174/138920210790886871]]
+
+
+* DNA Transposons
+
+Rich diversity of families.
+
+Widespread throughout diverse taxonomic groups.
+
+# http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2167627/
+Generally low copy number — transposition does not necessarily increase copy number:
+
+- transposition may occur immediately after replication to an un-replicated site
+- double strand break repair may lead to gene conversion event from sister
+
+
+* Retrotransposons
+
+Retrotransposable elements (RTEs) are a class of mobile repetitive elements that transpose via a copy-and-paste reverse-transcriptase-dependent mechanism.
+
+# The original lectures have an English translation of this slide.
+.image https://tuebingen.mpg.de/typo3temp/pics/e83e7f17ab.jpg 400 _
+
+.caption [[https://tuebingen.mpg.de/typo3temp/pics/e83e7f17ab.jpg][MPG Tübingen]] 2009
+
+
+* Retrotransposable elements
+
+Include:
+
+- Long INterspersed nuclear Elements (LINEs)
+- Short INterspersed nuclear Elements (SINEs)
+- Endogenous retroviruses/LTR retrotransposons
+
+.image http://ars.els-cdn.com/content/image/1-s2.0-S0168952509001796-gr1b1.jpg 260 _
+
+.caption Ray _et_al_. 1999 [[http://dx.doi.org/10.1016/j.tig.2009.09.006][doi:10.1016/j.tig.2009.09.006]]
+
+
+* Functional significance
+
+Transposable elements (TE) are often known to contain potential regulatory elements — sites that may bind transcription factors.
+
+Mobilisation of a TE may result in the introduction of a new regulatory element (or other functional* element) to impact of a gene's function — this is exaptation of the TE
+
+# The original lectures had only the bottom left part.
+.image http://mbe.oxfordjournals.org/content/30/6/1239/F3.large.jpg 310 _
+
+.caption de Souza _et_al_. 2013 [[http://dx.doi.org/10.1093/molbev/mst045][doi:10.1093/molbev/mst045]]
+
+* Functional significance
+
+Examples of developmentally significant genes driven by exapted transposable elements.
+
+# LF-SINE: Isl1
+# AmnSINE1-derived:  Fgf8 and SATB
+# LTR retrotransposon: POMC
+# MIR: Tal1
+.image http://mbe.oxfordjournals.org/content/30/6/1239/F2.large.jpg 400 _
+
+.caption de Souza _et_al_. 2013 [[http://dx.doi.org/10.1093/molbev/mst045][doi:10.1093/molbev/mst045]]
+
+
+* Functional significance
+
+Exapted transposable elements in an evolutionary context.
+
+.image http://mbe.oxfordjournals.org/content/30/6/1239/F1.large.jpg 430 _
+
+.caption de Souza _et_al_. 2013 [[http://dx.doi.org/10.1093/molbev/mst045][doi:10.1093/molbev/mst045]]
+
+
+* Functional significance
+
+In addition to this significant contribution to the evolution of regulatory complexity, RTE machinery can result in the generation of new copies of existing genes.
+
+.image http://api.onlinelibrary.wiley.com/asset/v1/doi/10.1002%2Fbies.201300181/asset/image_n%2Fbies201300181-fig-0001.png 370 _
+
+.caption Richardson _et_al_. 2014 [[http://dx.doi.org/10.1002/bies.201300181][doi:10.1002/bies.201300181]]
+
+
+* Functional significance
+
+DNA transposons and RTE sequences provide potential targets for recombination between otherwise unrelated chromosomal segments — this facilitates chromosomal translocation, deletion and inversion events.
+
+.image repeats/images/illegitimate.svg 420 _
+
+
+
+* Analytical significance
+
+Assembly problems:
+
+.image repeats/images/assembly.svg _ 500
+.caption after Salzberg and Yorke 2005 [[http://dx.doi.org/10.1093/bioinformatics/bti769][doi:10.1093/bioinformatics/bti769]]
+
+Characters for evolutionary/structural analysis:
+
+.image repeats/images/te-tag.svg _ 520
+
+
+* Identification
+
+Identifying and annotating repetitive regions is essential for subsequent analysis that is impacted by the presence of repeats:
+
+- _de_novo_ genome assembly requires that repetitive sequence be marked to avoid illegitimate contig joining
+- analysis of regulatory impacts of elements on neighbouring genes requires genomic associations be known
+- evolutionary analysis of repeat sequences requires that each member of a family be identified
+- analysis of the biological impact of repeat mobilisation requires that 'original' repeat locations be identified
+- _etc_.
+
+
+* Homology
+
+The _easiest_ way to find repeats is to look for sequences that are similar to repeat families that you already know about.
+
+# http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1634758/ Censor
+Censor and RepeatMasker algorithms (broadly):
+
+- search input data for similar sequences in a library of known annotated repeats
+- reduce redundancy by merging duplicates/overlapping elements when allowed*
+- merge adjacent elements when they are separated as a result of fragmentation*
+
+These do a fairly good job, but some crazy answers come out and the process depends on knowing the structure of what you are looking for.
+
+
+* ab initio repeat identification
+
+_Ab_initio_ repeat identification is the process of finding repeats without any preconceived ideas about what the repeats should look like — the only fundamental criterion is that they exist more than once in the target genome.
+
+An example of this approach is the PALS/PILER pipeline (also krishna/igor which is a newer implementation of these tools).
+
+PALS/krishna find local alignments between segments within a target genome.
+
+PILER/igor use these alignments to define families of repeated sequence.
+
+Other techniques are being developed that do not depend on having an assembly.
+
+
+* PILER/igor
+
+PILER/igor take pairwise genome alignment data and report family groupings.
+
+	No linkable image available. See figure 1 of the paper.
+
+.caption Edgar and Myers 2005 [[http://dx.doi.org/10.1093/bioinformatics/bti1003][doi:10.1093/bioinformatics/bti1003]]
+
+
+* PILER/igor
+
+Aligned regions (images) are identified and condensed into non-contiguous intervals (piles).
+
+.image repeats/images/piles.svg _ 800
+
+* PILER/igor
+
+Piles are connected if the aligned regions satisfy a set of conditions.
+
+.image repeats/images/align-links.svg 300 _
+
+Conditions:
+
+- each image length must be above a threshold fraction of its containing pile's length
+- each pile pair must be reasonably close in length
+
+
+* PILER/igor
+
+A graph-based clustering of piles is then performed.
+
+.image repeats/images/cluster-links.svg 450 _
+
+
+* PILER/igor
+
+This gives us a collection of piles that have been linked together by their alignability.
+
+# http://www.stanford.edu/class/stats366/tables.html
+.image http://web.stanford.edu/class/stats366/_images/e26c5ce3b7.png 440 _
+
+.caption [[http://www.stanford.edu/class/stats366/tables.html][SU Stats366]]
+
+
+* PILER/igor
+
+However, we need to resolve an (arbitrary) absolute strandedness for each family.
+
+.image repeats/images/cluster-links-directional.svg 250 _
+
+This is done by walking the edges marking each pile we come to with our current state, unless it is already marked, in which case we check it agrees with what we expect.
+If it doesn't we cannot use the family since we cannot unambiguously define the orientation relationships between members.
+
+With families grouped and orientated, we can mark their genomic locations and perform further analysis.
+
+* Deleterious effects of repeats
+
+Transposable elements may cause significant deleterious effects on the host:
+
+- transposition may cause insertional gene inactivation
+- retrocopies may cause inappropriate levels of gene expression or temporally/spatially inappropriate expression of genes
+- disregulation of existing genes by introduction of enhancers or insulators
+
+LINE transposition has been implicated in cancer progression and schizophrenia.
+
+.caption Carreira _et_al_. 2014 [[http://dx.doi.org/10.1111/febs.12601][doi:10.1111/febs.12601]]
+.caption Bundo _et_al_. 2014 [[http://dx.doi.org/10.1016/j.neuron.2013.10.053][doi:10.1016/j.neuron.2013.10.053]]
+
+This means that hosts benefit from evolving mechanisms to limit excessive transposon activity.
+
+(TEs themselves benefit from having limits — losing a host may be seen as careless).
+
+
+* Host control of repeats
+
+TE transposition is limited also by host responses — particularly epigenetic silencing. Small RNA molecules are central in the recognition and control of TE activity through a variety of mechanisms via the RNA-Induced Silencing Complex.
+
+# The original lectures included only parts b-e.
+.image http://ars.els-cdn.com/content/image/1-s2.0-S0962892405000826-gr1.jpg 370 _
+
+.caption Almeida and Allshire 2005 [[http://dx.doi.org/10.1016/j.tcb.2005.03.006][doi:10.1016/j.tcb.2005.03.006]]
+
+
+* piRNA
+
+The most important small RNA class involved in TE control are the piRNAs.
+
+# Run through diagram briefly, focusing mainly on the fact that the piRNA molecule
+# provides specificity to target the repreat transcript. But then point out that
+# piRNA molecules have also been shown to be involved in regulation of other classes
+# of genes. The argonaut gene product mediates the effects, possibly through other
+# cofactors.
+.image http://www.nature.com/nrg/journal/v14/n8/images/nrg3495-f2.jpg 450 _
+
+.caption Luteijn and Ketting 2013 [[http://dx.doi.org/10.1038/nrg3495][doi:10.1038/nrg3495]]
+
+* Recognizing piRNAs — a brief bioinformatics problem
+
+piRNA molecules are very loosely defined:
+
+- 21-30 bases long
+- a U at position 1 or an A at position 10
+
+This is unreasonably lax. How should you deal with this?
+
+- ignore it — less of a problem than you might think
+- consider the biology — how?
+
+* Recognizing piRNAs — a brief bioinformatics problem
+
+Consider the biology — how?
+
+# The original lectures has this as a part of figure 2 only showing the ping-pong cycle.
+.image http://www.nature.com/nrg/journal/v14/n8/images/nrg3495-f2.jpg 450 _
+
+.caption Luteijn and Ketting 2013 [[http://dx.doi.org/10.1038/nrg3495][doi:10.1038/nrg3495]]
+
+
+* Recognizing piRNAs — a brief bioinformatics problem
+
+How should you deal with this? As previously,
+
+- only consider reads that are 21-30 bases long
+- with either a U at position 1 or an A at position 10
+
+but also
+
+- have an overlapping read on the other strand with a complementary A/U at the correct position within the read
+
+.image repeats/images/piRNA-filter.svg 150 _
+
+* Non-coding elements in general
+
+There are a large number of classes of non-coding elements. Many you will already have seen.
+
+structural component-encoding genes:
+
+- ribosomal RNA and tRNA
+- spliceosomal RNA (snRNA)
+- modification guide RNAs (snoRNA)
+
+regulatory molecule-encoding genes:
+
+- piRNA
+- siRNA
+- miRNA
+- long ncRNA (numerous varieties)
+
+
+* Uses
+
+Artificially expressed small RNAs may be used to specifically down-regulate (termed _knock-down_) target genes with a technique called RNAi.
+
+This is commonly used in research to test genes for involvement in biological processes — either in a directed way or as part of a large-scale screen.
+
+In an agricultural or therapeutic setting this may be to direct research to useful target genes. In addition to this there is interest in RNAi in:
+
+therapeutics
+
+- targeted treatment for diseases by gene silencing — cancer, viral diseases, _etc_.
+
+agriculture/agritech
+
+- development of novel crop characteristics
+- pest control (_e.g._ expressing RNAi that are lethal to pests)
+
+
+* ncRNA — bioinformatic considerations
+
+Regulatory ncRNAs exert their activity by virtue of their base-pairing capacity.
+
+Strandedness is important and cannot necessarily be determined from the sequence itself without context — thus *sequencing*strandedness* is *important*.
+
+- single-stranded sequencing must be performed to retain this information
+
+Different classes of regulatory ncRNA have different characteristics:
+
+- genomic locations of encoding loci
+- size distributions
+- regulatory targets
+- sequence composition
+- evolutionary conservation
+
+These need to be considered when performing analyses on these new and interesting biological entities.
+
+
+* lincRNA ­— a case study in bioinformatic pipelines
+
+.image http://journals.plos.org/plosone/article/figure/image?size=medium&id=info:doi/10.1371/journal.pone.0042638.g001 500 _
+
+.caption Qu and Adelson 2012 [[http://dx.doi.org/10.1371/journal.pone.0042638][doi:10.1371/journal.pone.0042638]]

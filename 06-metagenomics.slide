@@ -1,0 +1,243 @@
+# Copyright ©2014 Dan Kortschak and The University of Adelaide. All rights reserved.
+
+metagenomics
+
+Dan Kortschak
+Bioinformatics Group
+dan.kortschak@adelaide.edu.au
+
+* Metagenomics
+
+# This needs to be on a normal slide.
+.html code/mathjax.html
+
+Metagenomics is the extension of genomics to encompass multiple individuals and species. All the same issues found in genomics studies are relevant here, only amplified making the problems even more difficult.
+
+These analyses may be used as an extension of microbial ecology to assess community membership, _e.g._:
+
+- environmental monitoring
+- human/veterinary health assessments
+- _etc_.
+
+They may also be used in conjunction with systems biology approaches to aid in novel pathway discovery, _e.g._ using deep sea vent and hotsprings microbes as sources of industrial pathways.
+
+* Metagenomics
+
+What does a metagenomic analysis involve in the general case?
+
+# This should include a discussion of how the problem impacts on the choice
+# of whether assembly is required. Highlight the importance of metadata — including
+# that metadata is generally important.
+.image http://www.microbialinformaticsj.com/content/figures/2042-5783-2-3-1.jpg 440 _
+
+.caption Thomas _et_al_. [[http://dx.doi.org/10.1186/2042-5783-2-3][doi:10.1186/2042-5783-2-3]]
+
+
+* Sampling
+
+With respect to sampling, metagenomics is the general case of genomics — in a genomics experiment you have a well defined (probably clonal) sample that will be sequenced.
+
+In the case of a metagenomics experiment some consideration must be made regarding what will be incorporated into the sequencing protocol.
+
+# This includes adequate qualities for each community member.
+Input to a metagenomics experiment should adequately represent the diversity of cells present in the community being investigated — and excluding the host if present — in the context of the experimental question being asked.
+
+Sampling strategy between experiments within a study should be consistent to allow comparability between samples.
+
+
+* Sequencing
+
+The choice of sequencing technology used depends very much on the study being performed, though Illumina and 454 sequencing are currently the most commonly used:
+
+- prefer 454 for assembly-based studies due to the increased read length
+- illumina now often preferred because of the high sequencing depth, though historically 454 has been common
+- small scale illumina MiSeq is also common because of speed and increased read length
+- paired-end illumina sequencing with short templates can be used to generate longer effective contiguous sequence data:
+
+.image metagenomics/images/pairedEnd.svg _ 600
+
+Using a mix of sequencing technologies allows complementing of error profiles.
+
+
+* Sequencing — targeted sequencing
+
+Targeting of specific target sequences allows increased depth for regions that are likely to be informative for the study — this is equivalent to exome sequencing in genomics — _e.g._ sequencing the 16S rRNA gene for community analysis.
+
+
+* Denoising and chimera detection
+
+There are particular issues associated with deep sequencing technologies that become an issue with metagenomic analysis — errors in sequencing and library preparation can produce data that inflate the numbers of OTU identified.
+
+Denoising is a treatment of data that handles the homopolymer length error inherent in 454 sequencing.
+
+- the occasional homopolymer errors show up as rare OTUs in the community
+
+Chimera molecules can arise in library preparation due to PCR artifacts — incomplete extension can result in a PCR product with ends of different origin:
+
+.image metagenomics/images/chimera.svg
+
+- algorithms exist that are able to detect chimeric sequences that would otherwise show up as a novel OTU
+
+
+* Assembly
+
+Assembly of metagenomic data is necessary when gene identification and functional annotation are part of the the experimental process, and may help improve sequence classification accuracy.
+
+Metagenome assembly is significantly more difficult than single genome assembly — something that we have already noted is extremely difficult to do correctly:
+
+- genome assembly tools are built around the assumption of clonal input and already have difficulty dealing with repetitively represented sequence
+- metagenomic input will likely include non-clonal genomes with identical or near-identical sequence from different origins
+- the assembly graph is massively larger
+
+New metagenomic assembly tools have been built that attempt to first separate reads from different species based on sequence composition (by _k_ - mer composition), or after partial assembly to analyse characteristic features before scaffolding.
+# The last part is a reference to bambus2 doi:10.1093/bioinformatics/btr520
+
+
+* Binning — taxonomic classification
+
+When using metagenomics for community analysis — _e.g._ in health assessment or environmental monitoring — it is necessary to classify sequences according to their species of origin.
+
+Classification may also be helpful when examining samples for pathway discovery.
+
+A number of approaches may be used for this task:
+
+- homology search of a sequence database from known taxa
+- sequence composition comparison against a database of known taxa
+- taxon-specific marker gene analysis
+# kraken doi:10.1186/gb-2014-15-3-r46
+- combination of composition analysis and phylogenetic analysis
+
+Annotation of taxonomic identity then allows statistical comparisons to be made on species diversity.
+
+* Species diversity
+
+Species diversity can be measured using a variety of metrics depending on the scale or context that is being investigated.
+
+- \(\begin{equation}\alpha\end{equation}\)-diversity is the biodiversity in a defined habitat or ecosystem
+- \(\begin{equation}\beta\end{equation}\)-diversity compares species diversity between habitats
+- \(\begin{equation}\gamma\end{equation}\)-diversity is the total biodiversity over a large region containing several ecosystems.
+
+Shannon information calculation can be used to calculate \(\begin{equation}\alpha\end{equation}\)-diversity:
+
+\begin{equation}H_\alpha = - \sum_{s \in S} p_s \ ln \ p_s\end{equation}
+
+where \(\begin{equation}p_s = n_s/N\end{equation}\), and the upper limit of \(\begin{equation}H_\alpha\end{equation}\) is \(\begin{equation}ln \ S\end{equation}\).
+
+
+* Species diversity
+
+Since the true diversity is being sampled randomly, following the species diversity as a function of the number of samples taken — giving a *rarefaction*curve* — gives an indication of how well saturated the sampling is.
+
+# png("saturation.png", height=400, width=600)
+# max <- 0.5
+# decay <- function(x, k, C) {
+# 	C * (1 - exp(-k*x))
+# }
+# require("ggplot2")
+# require("grid")
+# ggplot(NULL, aes(x=x, size=1, colour = C)) +
+# 	stat_function(data = data.frame(x = 0:max, C = factor(1)), fun = function(x) { decay(x, k=10, C=40) }) +
+# 	stat_function(data = data.frame(x = 0:max, C = factor(2)), fun = function(x) { decay(x, k=5, C=1e2) }) +
+# 	stat_function(data = data.frame(x = 0:max, C = factor(3)), fun = function(x) { decay(x, k=1, C=1e3) }) +
+# 	xlab(label="samples") + ylab(label="Number of OTU") + coord_cartesian(xlim=c(0, max), ylim=c(0, 100)) +
+# 	theme(legend.position="none",
+# 		axis.line = element_line(colour = "black"),
+# 		axis.title = element_text(size = 20),
+# 		axis.ticks = element_blank(),
+# 		axis.text = element_blank(),
+# 		panel.background = element_blank(),
+# 		panel.grid.major = element_blank(),
+# 		panel.grid.minor = element_blank(),
+# 		panel.border = element_blank())
+# dev.off()
+.image metagenomics/images/saturation.png
+
+
+* Species diversity — problems
+
+rDNA (16S) is commonly used as proxy for OTU identity since it is known to be present in all species and is conserved enough to be both readily identifiable and yet phylogenetically distinct.
+
+However there may be problems (not specific to rDNA):
+
+- horizontal gene transfer
+- more than one distinct sequence copy per bacterium
+- inadequately differentiated sequence
+
+Can use alternative sequences — usually housekeeping genes.
+
+* Species diversity — inadequately differentiated sequence
+
+Would you be confident in calling this as specific for _Borrelia_burgdorferi_?
+
+.image metagenomics/images/mappingProblems.png 420 _
+
+.caption Bent pers. commun.
+
+
+* Functional annotation
+
+Metagenomic data can be used to assess the metabolic or other functional capacity of the the microbial community being investigated.
+
+This analysis involves gene prediction, homology-based gene identification and classification of genes into
+
+- gene families
+- functional groupings based on *Gene*Ontology* classifications
+
+Again, the increased complexity and errors in metagenomic data makes the tools used for this kind of annotation inadequate.
+
+Metagenomic-specific tools have been built that better handle the size and complexity of these data sets.
+
+
+* Functional metagenomics
+
+The aim of a functional metagenomics study is to find what functions are occurring in a community and possibly which members of that community are involved in those processes.
+
+In the context of biotechnology, this may be motivated by the desire to find a metabolic pathway that can be used in an industrial process, remediation system, _etc_.
+
+The approach is then to find a — hopefully simple — community that is known or likely to perform the desired process and conduct a metagenomic study including functional annotation.
+
+Alternatively, a complex community can be used as a starting point with standard microbiological techniques used to then enrich for the characteristics being looked for.
+
+# http://www.tandfonline.com/doi/abs/10.5661/bger-26-335#.U6OlMHLnZ2s
+.caption Chistoserdova 2009 [[http://dx.doi.org/10.5661/bger-26-335][doi:10.5661/bger-26-335]]
+# http://aem.asm.org/content/77/4/1153.long
+.caption Simona and Daniel 2010 [[http://dx.doi.org/10.1128/AEM.02345-10][doi:10.1128/AEM.02345-10]]
+
+
+* Comparative metagenomics
+
+Comparative metagenomics analysis may be thought of as the ecological equivalent of transcriptomics analysis in a single organism*, where instead of examining transcript abundances in response to treatments, we look at species abundances via metagenomic methods.
+
+# "Unscaled principal coordinate analysis (PCoA) plots showing unweighted
+# (A) and weighted (B) UniFrac analysis of RCDI (red) and post-FMT (blue)
+# patient and healthy donor (green) samples.
+# RCDI patient samples are circled in red. RCDI samples from patient #6a (*),
+# who experienced antibiotic-induced relapse and was treated by FMT again as
+# patient #6b (**) are marked in dark red. Sample names indicate case numbers,
+# patient or donor source and time point of collection ("0" time point refers
+# to pre-FMT sampling time points; other time points are abbreviated as weeks
+# [w], months [m] and year [y])."
+.image http://journals.plos.org/plosone/article/figure/image?size=large&id=info:doi/10.1371/journal.pone.0081330.g004 250 _
+
+.caption Song _et_al_. 2013 [[http://dx.doi.org/10.1371/journal.pone.0081330][doi:10.1371/journal.pone.0081330]]
+
+*We can also perform metatranscriptomics which adds an additional layer of complexity onto the analysis.
+
+
+* Overall workflow
+
+.image http://synapse.koreamed.org/ArticleImage/0117GNI/gni-11-102-g001-l.jpg 500 _
+
+.caption Kim _et_al_. 2013 [[http://dx.doi.org/10.5808/GI.2013.11.3.102][doi:10.5808/GI.2013.11.3.102]]
+
+* resources
+
+General
+
+.link http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1000667
+.link http://www.microbialinformaticsj.com/content/2/1/3
+.link http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3794082/
+
+Binning
+
+.link http://genomebiology.com/2014/15/3/R46

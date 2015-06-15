@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Bioinformatics and Systems Modelling</title>
+  <link type="text/css" rel="stylesheet" href="/static/dir.css">
+  <script src="/static/dir.js"></script>
+</head>
+<body>
+
+<div id="topbar"><div class="container">
+
+<div id="heading"><a href="/">Bioinformatics and Systems Modelling</a></div>
+</form>
+
+</div></div>
+
+<div id="page">
+
+  <h1>Lectures</h1>
+
+  {{with .Path}}<h2>{{.}}</h2>{{end}}
+
+  {{with .Slides}}
+  <h4>Lectures:</h4>
+  <dl>
+  {{range .}}
+  <dd><a href="/{{.Path}}">{{.Name}}</a>: {{.Title}}</dd>
+  {{end}}
+  </dl>
+  {{end}}
+
+  {{with .Articles}}
+  <h4>Readings:</h4>
+  <dl>
+  {{range .}}
+  <dd><a href="/{{.Path}}">{{.Name}}</a>: {{.Title}}</dd>
+  {{end}}
+  </dl>
+  {{end}}
+
+  {{with .Other}}
+  <h4>Files:</h4>
+  <dl>
+  {{range .}}
+  <dd><a href="/{{.Path}}">{{.Name}}</a></dd>
+  {{end}}
+  </dl>
+  {{end}}
+</div>
+
+<div id="footer">
+<center>
+All content of this page and linked material is copyright Dan Kortschak and The University of Adelaide except where otherwise attributed.
+</center>
+</div>
+
+</body>
+</html>
